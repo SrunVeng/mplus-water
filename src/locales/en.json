@@ -1,0 +1,69 @@
+{
+  "brand": "M PLUS",
+  "nav.home": "Home",
+  "nav.products": "Products",
+  "nav.contact": "Contact",
+
+  "cta.see_products": "See Products",
+  "cta.contact_us": "Contact Us",
+  "cta.order": "Order",
+
+  "hero.headline_prefix": "Hydration, elevated with",
+  "hero.headline_brand": "M PLUS",
+  "hero.sub": "Our pure water supports local communities, supports Cambodian products.",
+
+  "stats.purity": "Purity",
+  "stats.purity_value": "99.9%",
+  "stats.minerals": "Minerals",
+  "stats.minerals_value": "Balanced",
+  "stats.delivery": "Delivery",
+  "stats.delivery_value": "Fast",
+
+  "product_details.title": "Product Details",
+  "product_details.sub": "Explore specifications, benefits, and delivery options.",
+  "product.water_quality": "Water Quality",
+  "product.water_quality_desc": "pH 7.2–7.6 · UV + RO + micron filtration.",
+  "product.delivery": "Delivery",
+  "product.delivery_desc": "Same-day delivery in city center · Next-day delivery in provinces · Free delivery on large orders.",
+
+  "footer.tagline": "water from cambodian for cambodian.",
+  "footer.copyright": "All rights reserved.",
+
+  "lang.switch_to_en": "English",
+  "lang.switch_to_km": "ខ្មែរ",
+
+  "contact.title": "Contact Us",
+  "contact.sub": "Reach us on Telegram or Facebook — or through our direct contact info below.",
+  "contact.stay_connected": "Stay Connected",
+  "contact.phone": "Phone",
+  "contact.address": "Address",
+  "contact.address_value": "Sangkat Toul Sangke, Phnom Penh City",
+  "contact.telegram_qr": "Telegram QR",
+  "contact.telegram_qr_sub": "Scan the QR below to connect with us on Telegram.",
+
+  "a11y.prev": "Previous",
+  "a11y.next": "Next",
+  "a11y.slide": "Slide {{num}}",
+
+
+
+  "products": {
+    "1": {
+      "name": "M PLUS 1.5L",
+      "desc": "Family size, ideal for meals.",
+      "details": ["BPA-free bottle", "Balanced pH", "Case of 12 available"]
+    },
+    "3": {
+      "name": "M PLUS 350ml",
+      "desc": "Small size, ideal for events",
+      "details": ["BPA-free bottle", "Balanced pH", "Case of 24 available"]
+    },
+    "4": {
+      "name": "M PLUS 500ml",
+      "desc": "Medium size, ideal for sports",
+      "details": ["BPA-free bottle", "Balanced pH", "Case of 24 available"]
+    }
+  }
+
+
+}

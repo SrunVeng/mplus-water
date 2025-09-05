@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-
+import { useTranslation, Trans } from 'react-i18next'
 
 export default function ProductSlider({ images = [] }) {
     const [idx, setIdx] = useState(0)
     const timer = useRef(null)
     const safe = useMemo(() => images.filter(Boolean), [images])
-
+    const { t } = useTranslation();
 
     useEffect(() => {
         clearInterval(timer.current)
@@ -15,9 +15,7 @@ export default function ProductSlider({ images = [] }) {
         return () => clearInterval(timer.current)
     }, [safe.length])
 
-
     const go = (n) => setIdx((n + safe.length) % safe.length)
-
 
     return (
         <div className="relative overflow-hidden rounded-3xl ring-1 ring-slate-200 shadow-soft">
@@ -32,15 +30,35 @@ export default function ProductSlider({ images = [] }) {
                     />
                 ))}
             </div>
-            <button onClick={() => go(idx - 1)} className="absolute left-3 top-1/2 -translate-y-1/2 inline-flex items-center justify-center h-10 w-10 rounded-full bg-white/80 ring-1 ring-slate-200 hover:bg-white" aria-label="Prev">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7"/></svg>
+
+            <button
+                onClick={() => go(idx - 1)}
+                className="absolute left-3 top-1/2 -translate-y-1/2 inline-flex items-center justify-center h-10 w-10 rounded-full bg-white/80 ring-1 ring-slate-200 hover:bg-white"
+                aria-label={t('a11y.prev')}
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7"/>
+                </svg>
             </button>
-            <button onClick={() => go(idx + 1)} className="absolute right-3 top-1/2 -translate-y-1/2 inline-flex items-center justify-center h-10 w-10 rounded-full bg-white/80 ring-1 ring-slate-200 hover:bg-white" aria-label="Next">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7"/></svg>
+
+            <button
+                onClick={() => go(idx + 1)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 inline-flex items-center justify-center h-10 w-10 rounded-full bg-white/80 ring-1 ring-slate-200 hover:bg-white"
+                aria-label={t('a11y.next')}
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7"/>
+                </svg>
             </button>
+
             <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
                 {safe.map((_, i) => (
-                    <button key={i} onClick={() => go(i)} className={`h-2.5 w-2.5 rounded-full ${i === idx ? 'bg-brand-600' : 'bg-white ring-1 ring-slate-300'}`} aria-label={`Slide ${i+1}`} />
+                    <button
+                        key={i}
+                        onClick={() => go(i)}
+                        className={`h-2.5 w-2.5 rounded-full ${i === idx ? 'bg-brand-600' : 'bg-white ring-1 ring-slate-300'}`}
+                        aria-label={t('a11y.slide', { num: i + 1 })}
+                    />
                 ))}
             </div>
         </div>

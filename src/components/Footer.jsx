@@ -1,6 +1,9 @@
 import { LOGO } from '../data'
+import { useTranslation } from 'react-i18next'
 
 export default function Footer() {
+    const { t } = useTranslation();
+
     return (
         <footer className="mt-16">
             <div className="w-full">
@@ -13,11 +16,11 @@ export default function Footer() {
                                 className="h-8 w-8 rounded-md ring-1 ring-white/30 object-cover"
                             />
                             <p className="text-white/90 text-sm">
-                                Premium hydration for everyone.
+                                {t('footer.tagline')}
                             </p>
                         </div>
                         <p className="text-white/80 text-sm">
-                            © {new Date().getFullYear()} M PLUS Water. All rights reserved.
+                            © {new Date().getFullYear()} {t('brand')}. {t('footer.copyright')}
                         </p>
                     </div>
                 </div>

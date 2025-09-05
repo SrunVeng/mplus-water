@@ -1,0 +1,68 @@
+{
+  "brand": "ទឹកពិសា អឹម ផ្លាស់",
+  "nav.home": "ទំព័រដើម",
+  "nav.products": "ផលិតផល",
+  "nav.contact": "ទំនាក់ទំនង",
+
+  "cta.see_products": "មើលផលិតផល",
+  "cta.contact_us": "ទាក់ទងមកកាន់យើង",
+  "cta.order": "ការបញ្ជាទិញ",
+
+  "hero.headline_prefix": "ការផ្តល់ទឹកឲ្យរាងកាយកាន់តែល្អជាមួយ",
+  "hero.headline_brand": "អឹម ផ្លាស់",
+  "hero.sub": "ទឹកសុទ្ធរបស់យើងគាំទ្រសហគមន៍ក្នុងស្រុក គាំទ្រផលិតកម្ពុជា",
+
+  "stats.purity": "គុណភាព",
+  "stats.purity_value": "99.9%",
+  "stats.minerals": "រ៉ែ",
+  "stats.minerals_value": "សមតុល្យ",
+  "stats.delivery": "ដឹកជញ្ជូន",
+  "stats.delivery_value": "រហ័ស",
+
+  "product_details.title": "ផលិតផលពួកយេីង",
+  "product_details.sub": "លក្ខណៈពិសេស អត្ថប្រយោជន៍ និងជម្រើសដឹកជញ្ជូន។",
+  "product.water_quality": "គុណភាពទឹក",
+  "product.water_quality_desc": "pH 7.2–7.6 · UV + RO + ការចម្រោះដោយមីក្រូណ៍។",
+  "product.delivery": "ដឹកជញ្ជូន",
+  "product.delivery_desc": "ដឹកជញ្ជូនក្នុងថ្ងៃសម្រាប់ទីក្រុង · ដឹកជញ្ជូនថ្ងៃបន្ទាប់សម្រាប់ខេត្ត · ដឹកជញ្ជូនឥតគិតថ្លៃសម្រាប់ការបញ្ជាទិញច្រើន។",
+
+  "footer.tagline": "ការផ្តល់ទឹកគុណភាពខ្ពស់សម្រាប់គ្រប់គ្នា។",
+  "footer.copyright": "រក្សាសិទ្ធិគ្រប់យ៉ាង។",
+
+  "lang.switch_to_en": "English",
+  "lang.switch_to_km": "ខ្មែរ",
+
+  "contact.title": "ទាក់ទងមកកាន់យើង",
+  "contact.sub": "អាចទាក់ទងតាម Telegram ឬ Facebook — ឬតាមព័ត៌មានទំនាក់ទំនងនៅខាងក្រោម។",
+  "contact.stay_connected": "ទំនាក់ទំនងតាម",
+  "contact.phone": "ទូរស័ព្ទ",
+  "contact.address": "អាសយដ្ឋាន",
+  "contact.address_value": "សង្កាត់ទួលសង្កែ, រាជធានីភ្នំពេញ",
+  "contact.telegram_qr": "QR Telegram",
+  "contact.telegram_qr_sub": "ស្កេន QR ខាងក្រោមសម្រាប់ព័ត៌មានបន្ថែម",
+
+  "a11y.prev": "ថយក្រោយ",
+  "a11y.next": "ទៅមុខ",
+  "a11y.slide": "ស្លាយ {{num}}",
+
+
+  "products": {
+    "1": {
+      "name": "អឹម ផ្លាស់ 1.5L",
+      "desc": "ទំហំគ្រួសារ សាកសមសម្រាប់ពេលជួបជុំ",
+      "details": ["ដបគ្មាន BPA", "pH សមតុល្យ", "១កេស មាន 12"]
+    },
+    "3": {
+      "name": "អឹម ផ្លាស់ 350ml",
+      "desc": "ទំហំតូច សាកសមសម្រាប់កម្មវិធី",
+      "details": ["ដបគ្មាន BPA", "pH សមតុល្យ", "១កេស មាន 24"]
+    },
+    "4": {
+      "name": "អឹម ផ្លាស់ 500ml",
+      "desc": "ទំហំមធ្យម សាកសមសម្រាប់កីឡា",
+      "details": ["ដបគ្មាន BPA", "pH សមតុល្យ", "១កេស មាន24"]
+    }
+
+}
+
+}

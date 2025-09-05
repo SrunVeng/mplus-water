@@ -1,17 +1,21 @@
+import { useTranslation } from 'react-i18next'
+
 export default function Contact() {
+    const { t } = useTranslation();
+
     return (
         <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
             <header className="mb-8">
-                <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">Contact Us</h1>
+                <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">{t('contact.title')}</h1>
                 <p className="mt-2 text-slate-600">
-                    Reach us on Telegram or Facebook — or through our direct contact info below.
+                    {t('contact.sub')}
                 </p>
             </header>
 
             <div className="grid md:grid-cols-2 gap-8 items-start">
                 {/* Social & Info card */}
                 <div className="bg-white rounded-3xl ring-1 ring-slate-200 shadow-soft p-6">
-                    <h2 className="text-xl font-semibold">Stay Connected</h2>
+                    <h2 className="text-xl font-semibold">{t('contact.stay_connected')}</h2>
 
                     {/* Social buttons */}
                     <div className="w-full h-auto py-6 flex items-center justify-start gap-4 flex-wrap">
@@ -67,28 +71,23 @@ export default function Contact() {
                     {/* General info */}
                     <div className="mt-6 space-y-4 text-slate-700">
                         <p>
-                            <span className="font-medium">Phone:</span>{" "}
+                            <span className="font-medium">{t('contact.phone')}:</span>{" "}
                             <a href="tel:+85511300374" className="text-blue-600 hover:underline">
                                 +855 (11) 300-374
                             </a>
                         </p>
                         <p>
-                            {/*<span className="font-medium">Email:</span>{" "}*/}
-                            {/*<a href="mailto:info@pureblue.example" className="text-blue-600 hover:underline">*/}
-                            {/*    info@pureblue.example*/}
-                            {/*</a>*/}
-                        </p>
-                        <p>
-                            <span className="font-medium">Address:</span> Sangkat Toul Sangke, Phnom Penh City
+                            <span className="font-medium">{t('contact.address')}:</span>{" "}
+                            {t('contact.address_value')}
                         </p>
                     </div>
                 </div>
 
                 {/* QR card */}
                 <div className="bg-white rounded-3xl ring-1 ring-slate-200 shadow-soft p-6">
-                    <h2 className="text-xl font-semibold">Telegram QR</h2>
+                    <h2 className="text-xl font-semibold">{t('contact.telegram_qr')}</h2>
                     <p className="mt-2 text-slate-600">
-                        Scan the QR below to connect with us on Telegram.
+                        {t('contact.telegram_qr_sub')}
                     </p>
                     <div className="mt-4 w-full max-w-xs rounded-2xl bg-slate-50 overflow-hidden ring-1 ring-slate-200">
                         <img
