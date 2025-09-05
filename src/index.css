@@ -1,0 +1,10 @@
+/* Base latin stack */
+:root, html, body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+/* When Khmer is active, swap the font */
+html[lang="km"] body {
+    font-family: "Noto Sans Khmer", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    letter-spacing: 0.1px; /* subtle boost for readability */
+}
