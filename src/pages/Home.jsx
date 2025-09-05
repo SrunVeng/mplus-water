@@ -10,7 +10,7 @@ export default function Home() {
                 <div className="grid lg:grid-cols-2 gap-10 items-center">
                     <div>
                         <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900">
-                            Hydration, elevated with <span className="text-brand-700">PureBlue</span>
+                            Hydration, elevated with <span className="text-brand-700">M PLUS</span>
                         </h1>
                         <p className="mt-4 text-lg text-slate-600 max-w-prose">
                             Ultra‑pure bottled water designed for daily wellness. Subtle minerals, crisp taste, and reliable delivery for homes & offices.

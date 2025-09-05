@@ -17,7 +17,7 @@ export default function Footer() {
                             </p>
                         </div>
                         <p className="text-white/80 text-sm">
-                            © {new Date().getFullYear()} PureBlue Water. All rights reserved.
+                            © {new Date().getFullYear()} M PLUS Water. All rights reserved.
                         </p>
                     </div>
                 </div>

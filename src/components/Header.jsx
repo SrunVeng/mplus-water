@@ -10,11 +10,11 @@ export default function Header() {
                         <Link to="/" className="flex items-center gap-3 group">
                             <img
                                 src={LOGO}
-                                alt="PureBlue logo"
+                                alt="M PLUS logo"
                                 className="h-8 w-8 rounded-md ring-1 ring-white/30 object-cover"
                             />
                             <span className="text-white font-semibold tracking-tight">
-                PureBlue
+                M PLUS
               </span>
                         </Link>
                         <nav className="hidden md:flex items-center gap-8 text-sm">

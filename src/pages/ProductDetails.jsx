@@ -1,11 +1,11 @@
 import { IMAGES } from '../data'
+import {Link} from "react-router-dom";
 
 
 const products = [
-    { id: 1, name: 'PureBlue 350ml', desc: 'Compact hydration for on-the-go.', img: IMAGES[0], details: ['BPA-free bottle', 'Light mineral profile', 'Case of 24 available'] },
-    { id: 2, name: 'PureBlue 600ml', desc: 'Daily carry with the perfect balance.', img: IMAGES[1], details: ['Recyclable', 'Electrolyte-balanced', 'Bulk discounts'] },
-    { id: 3, name: 'PureBlue 1.5L', desc: 'Family size, ideal for meals.', img: IMAGES[2], details: ['Resealable cap', 'Tastes crisp and clean', 'Weekly delivery plans'] },
-    { id: 4, name: 'PureBlue Gallon', desc: 'Dispenser-ready for offices.', img: IMAGES[3], details: ['Refill program', 'Leak-proof seal', 'Free pump on first order'] },
+    { id: 1, name: 'M PLUS 1.5L', desc: 'Family size, ideal for meals.', img: IMAGES[0], details: ['BPA-free bottle', 'Balance PH', 'Case of 12 available'] },
+    { id: 3, name: 'M PLUS 350ml', desc: 'Small size, ideal for events', img: IMAGES[2], details: ['BPA-free bottle', 'Balance PH', 'Case of 24 available'] },
+    { id: 4, name: 'M PLUS 500ml', desc: 'Medium size, ideal for sports', img: IMAGES[3], details: ['BPA-free bottle', 'Balance PH', 'Case of 24 available'] },
 ]
 
 
@@ -33,8 +33,12 @@ export default function ProductDetails() {
                                 ))}
                             </ul>
                             <div className="mt-5 flex items-center gap-2">
-                                <button className="inline-flex items-center rounded-xl px-4 py-2 bg-brand-600 text-white hover:bg-brand-700">Order</button>
-                                <button className="inline-flex items-center rounded-xl px-4 py-2 ring-1 ring-inset ring-slate-200 hover:ring-brand-300">Learn more</button>
+                                <Link
+                                    to="/contact"
+                                    className="inline-flex items-center rounded-xl px-4 py-2 bg-brand-600 text-white hover:bg-brand-700"
+                                >
+                                    Order
+                                </Link>
                             </div>
                         </div>
                     </li>
@@ -45,11 +49,11 @@ export default function ProductDetails() {
             <div className="mt-12 grid lg:grid-cols-2 gap-8">
                 <div className="bg-white rounded-3xl ring-1 ring-slate-200 shadow-soft p-6">
                     <h2 className="text-xl font-semibold">Water Quality</h2>
-                    <p className="mt-2 text-slate-600">TDS 35–55 ppm · pH 7.2–7.6 · UV + RO + micron filtration.</p>
+                    <p className="mt-2 text-slate-600">pH 7.2–7.6 · UV + RO + micron filtration.</p>
                 </div>
                 <div className="bg-white rounded-3xl ring-1 ring-slate-200 shadow-soft p-6">
-                    <h2 className="text-xl font-semibold">Delivery Options</h2>
-                    <p className="mt-2 text-slate-600">Same‑day in city center · Weekly subscriptions · Contactless drop‑off.</p>
+                    <h2 className="text-xl font-semibold">Delivery</h2>
+                    <p className="mt-2 text-slate-600">Same-day delivery in city center · 1-2 days delivery in provinces · Free delivery on large orders.</p>
                 </div>
             </div>
         </section>
