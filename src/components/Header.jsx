@@ -45,7 +45,7 @@ function LangToggle({ className }) {
         </span>
         <span className={clsx('flex items-center justify-center gap-1 px-2', !isEN ? 'opacity-100' : 'opacity-80')}>
           <CountryFlag svg countryCode="KH" style={{ width: 14, height: 14, borderRadius: 2 }} aria-label="KM" />
-          ខ្មែរ
+          KH
         </span>
       </span>
         </button>
