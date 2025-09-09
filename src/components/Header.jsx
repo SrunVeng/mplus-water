@@ -7,7 +7,7 @@ import { Menu, X } from 'lucide-react'
 import CountryFlag from 'react-country-flag'
 import { motion } from 'framer-motion'
 import clsx from 'clsx'
-import { LOGO } from '../data/data.js'
+import { LOGO } from '../data/imgLink.js'
 
 function LangToggle({ className }) {
     const { i18n } = useTranslation()

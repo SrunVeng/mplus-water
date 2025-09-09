@@ -1,6 +1,7 @@
 // src/pages/ProductsPage.jsx
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next"; // <-- add this
 
 import { useOrder } from "../context/OrderContext";
 import { useOrderProgress } from "../context/OrderProgressContext";
@@ -29,10 +30,10 @@ export default function ProductsPage() {
         removeItem,
     } = useOrder();
 
+    const { t } = useTranslation(); // <-- use t
     const { steps, setSteps } = useOrderProgress();
     const nav = useNavigate();
 
-    // Gate: if Info step isn't complete, send user back to Step 1
     useEffect(() => {
         if (!infoComplete(state.form)) {
             nav("/order/info", { replace: true });
@@ -46,13 +47,10 @@ export default function ProductsPage() {
             <div className="flex items-center justify-between">
                 <h1 className="text-2xl font-semibold tracking-tight">Create Order</h1>
 
-                {/* Lock clicking ahead: maxAllowedStep is 2 until Products is valid/completed */}
                 <ProgressSteps
                     current={2}
                     maxAllowedStep={steps?.products ? 3 : 2}
-                    onBlockedAttempt={() => {
-                        /* e.g., toast.error("Finish this step first") */
-                    }}
+                    onBlockedAttempt={() => {}}
                 />
             </div>
 
@@ -75,9 +73,10 @@ export default function ProductsPage() {
                                 key={it.id}
                                 item={{
                                     ...it,
+                                    // ✅ Use translated names here instead of the raw key
                                     options: PRODUCT_CATALOG.map((p) => (
                                         <option key={p.id} value={p.id}>
-                                            {p.name} — ${p.price.toFixed(2)}
+                                            {t(p.name)} — ${p.price.toFixed(2)}
                                         </option>
                                     )),
                                 }}
@@ -101,9 +100,7 @@ export default function ProductsPage() {
 
                         <button
                             type="button"
-                            onClick={() =>
-                                continueFromProducts({ items: state.items, setSteps, nav })
-                            }
+                            onClick={() => continueFromProducts({ items: state.items, setSteps, nav })}
                             disabled={!isProductsValid}
                             className={`rounded-2xl px-5 py-3 font-medium transition ${
                                 isProductsValid

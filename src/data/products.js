@@ -1,6 +1,8 @@
-// Replace IMAGES[] with your own assets if you have them
+
+import {IMAGES} from "./imgLink.js";
+
 export const PRODUCT_CATALOG = [
-    { id: "1", name: "products.1.name", price: 2.5, img: "/images/1.jpg", desc: "products.1.desc" },
-    { id: "3", name: "products.3.name", price: 14.0, img: "/images/3.jpg", desc: "products.3.desc" },
-    { id: "4", name: "products.4.name", price: 11.5, img: "/images/4.jpg", desc: "products.4.desc" },
+    { id: "1", name: "products.1.name", price: 5.0, img: IMAGES[0], desc: "products.1.desc" },
+    { id: "3", name: "products.3.name", price: 4.0, img: IMAGES[2], desc: "products.3.desc" },
+    { id: "4", name: "products.4.name", price: 4.5, img: IMAGES[3], desc: "products.4.desc" },
 ];

@@ -1,5 +1,5 @@
 import ProductSlider from '../pages/ProductSlider.jsx'
-import { IMAGES } from '../data/data.js'
+import { IMAGES } from '../data/imgLink.js'
 import { Link } from 'react-router-dom'
 import { Trans, useTranslation } from 'react-i18next'
 

@@ -144,7 +144,7 @@ export default function InfoPage() {
 
 function Field({ label, required, hint, children }) {
     return (
-        <div className="space-y-1.5">
+        <div className="space-y-1.5 bg:brand-700">
             <div className="flex items-center justify-between">
                 <label className="text-[13px] font-semibold text-slate-900 tracking-wide">
                     {label}
