@@ -1,5 +1,5 @@
 // src/pages/ProductDetails.jsx
-import { IMAGES } from '../data'
+import { IMAGES } from '../data/data.js'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
@@ -69,7 +69,7 @@ export default function ProductDetails() {
 
                             <div className="mt-5 flex items-center gap-2">
                                 <Link
-                                    to="/contact"
+                                    to="/order"
                                     className="inline-flex items-center rounded-xl px-4 py-2 bg-brand-600 text-white hover:bg-brand-700"
                                 >
                                     {t('cta.order')}
@@ -86,7 +86,7 @@ export default function ProductDetails() {
                     <p className="mt-2 text-slate-600">{t('product.water_quality_desc')}</p>
                 </div>
                 <div className="bg-white rounded-3xl ring-1 ring-slate-200 shadow-soft p-6">
-                    <h2 className="text-xl font-semibold">{t('product.delivery')}</h2>
+                    <h2 className="text-xl font-semibold">{t('product.delivery.js')}</h2>
                     <p className="mt-2 text-slate-600">{t('product.delivery_desc')}</p>
                 </div>
             </div>

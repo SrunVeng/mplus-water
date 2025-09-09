@@ -1,4 +1,4 @@
-import { LOGO } from '../data'
+import { LOGO } from '../data/data.js'
 import { useTranslation } from 'react-i18next'
 
 export default function Footer() {
