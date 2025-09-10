@@ -1,5 +1,5 @@
 import ProductSlider from '../pages/ProductSlider.jsx'
-import { IMAGES } from '../data'
+import { IMAGES } from '../data/imgLink.js'
 import { Link } from 'react-router-dom'
 import { Trans, useTranslation } from 'react-i18next'
 
@@ -39,7 +39,7 @@ export default function Home() {
                                 <dd className="mt-1 text-xl font-semibold">{t('stats.minerals_value')}</dd>
                             </div>
                             <div className="p-4 rounded-2xl bg-white ring-1 ring-slate-100 shadow-soft">
-                                <dt className="text-xs uppercase tracking-wide text-slate-500">{t('stats.delivery')}</dt>
+                                <dt className="text-xs uppercase tracking-wide text-slate-500">{t('stats.delivery.js')}</dt>
                                 <dd className="mt-1 text-xl font-semibold">{t('stats.delivery_value')}</dd>
                             </div>
                         </dl>
