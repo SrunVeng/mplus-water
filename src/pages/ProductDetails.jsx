@@ -1,21 +1,7 @@
 // src/pages/ProductDetails.jsx
-import { IMAGES } from '../data/imgLink.js'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-
-// Keep product meta lean: ids + images (+ optional price if you want)
-const products = [
-    { id: 1, img: IMAGES[0] },
-    { id: 3, img: IMAGES[2] },
-    { id: 4, img: IMAGES[3] },
-]
-
-// Optional: if you have prices in a catalog, map them here (otherwise omit)
-const PRICE_MAP = {
-    1: 2.5,
-    3: 14.0,
-    4: 11.5,
-}
+import { PRODUCT_CATALOG } from '../data/products.js' // adjust path if needed
 
 export default function ProductDetails() {
     const { t } = useTranslation()
@@ -30,16 +16,13 @@ export default function ProductDetails() {
             </header>
 
             <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {products.map((p) => {
-                    const nameKey = `products.${p.id}.name`
-                    const descKey = `products.${p.id}.desc`
+                {PRODUCT_CATALOG.map((p) => {
                     const details = t(`products.${p.id}.details`, {
                         returnObjects: true,
                         defaultValue: [],
                     })
-                    const name = t(nameKey)
-                    const desc = t(descKey)
-                    const price = PRICE_MAP[p.id]
+                    const name = t(p.name)
+                    const desc = t(p.desc)
 
                     return (
                         <li
@@ -71,10 +54,10 @@ export default function ProductDetails() {
                                 )}
 
                                 <div className="mt-5 flex items-center gap-3">
-                                    {typeof price === 'number' && (
+                                    {typeof p.price === 'number' && (
                                         <span className="text-slate-900 font-semibold">
-                      ${price.toFixed(2)}
-                    </span>
+                                            ${p.price.toFixed(2)}
+                                        </span>
                                     )}
 
                                     <Link
@@ -96,7 +79,6 @@ export default function ProductDetails() {
                     <p className="mt-2 text-slate-600">{t('product.water_quality_desc')}</p>
                 </div>
                 <div className="bg-white rounded-3xl ring-1 ring-slate-200 shadow-soft p-6">
-                    {/* fixed key here */}
                     <h2 className="text-xl font-semibold">{t('product.delivery')}</h2>
                     <p className="mt-2 text-slate-600">{t('product.delivery_desc')}</p>
                 </div>

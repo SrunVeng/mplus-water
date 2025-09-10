@@ -51,17 +51,17 @@
     "1": {
       "name": "M PLUS 1.5L",
       "desc": "Family size, ideal for meals.",
-      "details": ["BPA-free bottle", "Balanced pH", "Case of 12 available"]
+      "details": ["BPA-free bottle", "Balanced pH", "Case of 6 available"]
     },
     "3": {
       "name": "M PLUS 350ml",
       "desc": "Small size, ideal for events",
-      "details": ["BPA-free bottle", "Balanced pH", "Case of 24 available"]
+      "details": ["BPA-free bottle", "Balanced pH", "Case of 12 available"]
     },
     "4": {
       "name": "M PLUS 500ml",
       "desc": "Medium size, ideal for sports",
-      "details": ["BPA-free bottle", "Balanced pH", "Case of 24 available"]
+      "details": ["BPA-free bottle", "Balanced pH", "Case of 12 available"]
     }
   }
 
