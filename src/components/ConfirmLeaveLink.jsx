@@ -2,43 +2,42 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
-
 export default function ConfirmLeaveLink({
                                              to,
                                              children,
-                                             title = "Leave this page?",
-                                             confirmText =
-                                             "You have an in-progress order. If you leave now, your changes may be lost.",
+                                             title = "Are you sure?",
+                                             confirmText = "This action may cause you to lose progress.",
                                              className,
-                                             onAfterNavigate, // NEW: lets callers do cleanup (e.g., close mobile menu)
+                                             confirmLabel = "Leave",
+                                             cancelLabel = "Stay",
+                                             onAfterNavigate, // optional cleanup after navigation
                                          }) {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const cancelRef = useRef(null);
 
-
     useEffect(() => {
         if (open) cancelRef.current?.focus();
     }, [open]);
 
-
     const handleConfirm = () => {
         setOpen(false);
-        navigate(to);
+        if (to) navigate(to);
         onAfterNavigate?.();
     };
+
     const onKeyDown = (e) => {
         if (e.key === "Escape") setOpen(false);
     };
 
-
     return (
         <>
+            {/* Trigger */}
             <button type="button" className={className} onClick={() => setOpen(true)}>
                 {children}
             </button>
 
-
+            {/* Modal */}
             <AnimatePresence>
                 {open && (
                     <div
@@ -55,7 +54,6 @@ export default function ConfirmLeaveLink({
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                         />
-
 
                         {/* Centering wrapper */}
                         <div className="absolute inset-0 flex items-center justify-center px-4">
@@ -99,20 +97,19 @@ export default function ConfirmLeaveLink({
                                         </div>
                                     </div>
 
-
                                     <div className="mt-6 flex justify-end gap-3">
                                         <button
                                             ref={cancelRef}
                                             onClick={() => setOpen(false)}
                                             className="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300"
                                         >
-                                            Stay
+                                            {cancelLabel}
                                         </button>
                                         <button
                                             onClick={handleConfirm}
                                             className="px-4 py-2 rounded-xl bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-300"
                                         >
-                                            Leave
+                                            {confirmLabel}
                                         </button>
                                     </div>
                                 </div>

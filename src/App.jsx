@@ -1,4 +1,3 @@
-// src/App.jsx
 import React from "react";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 
@@ -17,6 +16,7 @@ import InfoPage from "./pages/InfoPage";
 import ProductsPage from "./pages/ProductsPage";
 import ReviewPage from "./pages/ReviewPage";
 import PaymentPage from "./pages/PaymentPage";
+import QRPaymentPage from "./pages/QRPaymentPage"; // <-- NEW
 import RequireStep from "./routes/RequireStep";
 
 // Layout for order pages only: wires confirm-on-leave using order state
@@ -117,6 +117,15 @@ export default function App() {
                             element={
                                 <RequireStep requiredStepId={3}>
                                     <PaymentPage />
+                                </RequireStep>
+                            }
+                        />
+                        {/* Dedicated QR screen */}
+                        <Route
+                            path="payment/qr"
+                            element={
+                                <RequireStep requiredStepId={3}>
+                                    <QRPaymentPage />
                                 </RequireStep>
                             }
                         />
