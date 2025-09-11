@@ -1,10 +1,11 @@
+// src/pages/QRPaymentPage.jsx
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useOrder } from "../context/OrderContext";
 import ProgressSteps from "../components/ProgressSteps";
 import SummaryCard from "../components/SummaryCard";
 import ConfirmLeaveLink from "../components/ConfirmLeaveLink";
-import QRPayment from "../components/QRPayment.jsx";
+import QRPayment from "../components/payment/QRPayment/QRPayment.jsx";
 
 export default function QRPaymentPage() {
     const nav = useNavigate();
@@ -13,22 +14,15 @@ export default function QRPaymentPage() {
 
     // Prefer router state; fallback to context if user refreshed.
     const routerState = location.state || {};
-    const initialOrder = routerState.order || {
-        items: enriched,
-        amount,
-        deliveryFee,
-        grandTotal,
-    };
+    const initialOrder = routerState.order || { items: enriched, amount, deliveryFee, grandTotal };
     const initialQR = routerState.qrPayload || null;
 
     const [qrPayload, setQrPayload] = useState(initialQR);
     const [qrExpired, setQrExpired] = useState(false);
 
-    // If direct visit without payload, go back to payment method selection.
+    // If direct visit without payload, go back to selection.
     useEffect(() => {
-        if (!qrPayload) {
-            nav("/order/payment", { replace: true });
-        }
+        if (!qrPayload) nav("/order/payment", { replace: true });
     }, [qrPayload, nav]);
 
     if (!qrPayload) return null;
@@ -52,7 +46,7 @@ export default function QRPaymentPage() {
                                 confirmText="Your KHQR payment is in progress. Are you sure you want to cancel and go back?"
                                 confirmLabel="Cancel Payment"
                                 cancelLabel="Stay"
-                                className="px-4 py-2 rounded-xl border border-slate-300 hover:border-slate-900"
+                                className="px-4 py-2 rounded-xl border border-slate-300 hover:border-slate-900 min-h-[44px]"
                             >
                                 Cancel payment
                             </ConfirmLeaveLink>
@@ -63,8 +57,8 @@ export default function QRPaymentPage() {
                         <QRPayment
                             key={qrPayload?.qrString ?? "qr"}
                             payload={qrPayload}
-                            merchantName={qrPayload.merchantName || "QR"}
-                            title
+                            merchantName={qrPayload.merchantName}
+                            title="ABA PAY"
                             minutesToExpire={5}
                             onExpired={() => setQrExpired(true)}
                             note="Scan with ABA Mobile or any KHQR-supported banking app"

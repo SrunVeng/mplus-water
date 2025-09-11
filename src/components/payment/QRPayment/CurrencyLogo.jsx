@@ -1,15 +1,21 @@
-// QRUi/CurrencyLogo.jsx
+// src/components/payments/QRPayment/CurrencyLogo.jsx
+import React from "react";
+import { currencyGlyph } from "../../../utils/money";
+
 export default function CurrencyLogo({
                                          size = 44,
-                                         currency = "USD", // USD | KHR
+                                         currency = "USD",
                                          textColor = "white",
                                          className = "",
                                          style,
                                          withBorder = true,
+                                         "aria-label": ariaLabel,
                                          ...rest
                                      }) {
-    const glyph = currency === "KHR" ? "៛" : "$";
+    const glyph = currencyGlyph(currency);
     const fontSize = Math.round(size * 0.52);
+    const borderWidth = Math.max(2, Math.round(size * 0.09));
+    const decorativeOnly = !ariaLabel;
 
     return (
         <div
@@ -18,9 +24,10 @@ export default function CurrencyLogo({
                 width: size,
                 height: size,
                 background: "#00526A",
-                border: withBorder ? "4px solid #FFFFFF" : "none",
+                border: withBorder ? `${borderWidth}px solid #FFFFFF` : "none",
                 ...style,
             }}
+            {...(decorativeOnly ? { "aria-hidden": true } : { role: "img", "aria-label": ariaLabel })}
             {...rest}
         >
       <span
@@ -30,7 +37,7 @@ export default function CurrencyLogo({
                   "'Nunito Sans', system-ui, -apple-system, Segoe UI, Roboto, Arial",
               fontWeight: 800,
               lineHeight: 1,
-              fontSize: 16,
+              fontSize,
           }}
       >
         {glyph}

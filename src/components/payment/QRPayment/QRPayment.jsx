@@ -1,17 +1,19 @@
-import React, { useMemo } from "react";
+// src/components/payments/QRPayment/QRPayment.jsx
+import React, { useEffect, useMemo, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useCountdown, timeParts } from "../utils/uiUtils.js";
-import LogoABA from "../assets/ABAPay.svg";
-import NotchedHeader from "./QRUi/NotchedHeader.jsx";
-import SvgPaymentCard from "./QRUi/SvgPaymentCard.jsx";
-import CurrencyLogo from "./QRUi/CurrencyLogo.jsx";
-import MerchantWordmark from "./QRUi/MerchantWordmark.jsx";
+import { useCountdown, timeParts } from "../../../utils/time";
+import { computeResponsiveQrPixels } from "../../../utils/dom";
+import NotchedHeader from "./NotchedHeader";
+import MerchantWordmark from "./MerchantWordmark";
+import CurrencyLogo from "./CurrencyLogo";
+import CardShell from "./CardShell";
+import ABAPayLogo from "../../../assets/ABAPay.svg";
 
 export default function QRPayment({
                                       payload,
                                       merchantName,
-                                      title,
+                                      title = "ABA PAY",
                                       minutesToExpire = 5,
                                       onExpired,
                                       note = "Scan with ABA Mobile or any KHQR-supported banking app",
@@ -19,46 +21,60 @@ export default function QRPayment({
     const qrString = payload?.qrString || "";
     const amount = payload?.amount;
     const currency = payload?.currency || "USD";
-    const safeMerchant = merchantName || payload?.merchantName;
+    const safeMerchant = merchantName || payload?.merchantName || "";
 
+    // Responsive QR size
+    const [qrPixels, setQrPixels] = useState(176);
+    useEffect(() => {
+        const recalc = () => {
+            const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+            setQrPixels(computeResponsiveQrPixels(vw));
+        };
+        recalc();
+        window.addEventListener("resize", recalc);
+        return () => window.removeEventListener("resize", recalc);
+    }, []);
+
+    // amount display
     const displayAmount = useMemo(() => {
         if (typeof amount === "number") {
-            return amount.toLocaleString(undefined, { maximumFractionDigits: 2 });
+            return amount;
         }
         return amount ?? "—";
     }, [amount]);
 
+    // countdown
     const totalMs = minutesToExpire * 60 * 1000;
     const remainingMs = useCountdown(totalMs, onExpired);
     const { mm, ss } = timeParts(remainingMs);
     const isExpired = remainingMs <= 0;
 
-    // Integer sizes prevent sub-pixel blur on iOS Safari.
-    const QR_PIXELS = 144;
-    const centerBadgeSize = Math.max(40, Math.floor(QR_PIXELS * 0.18));
+    const centerBadgeSize = Math.max(40, Math.floor(qrPixels * 0.18));
     const hasQr = typeof qrString === "string" && qrString.length > 0;
 
     return (
-        <div className="w-full min-h-[60vh] flex items-start justify-center">
+        <div className="w-full min-h-[60vh] flex items-start justify-center px-3 sm:px-0">
             <div className="relative w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden bg-gradient-to-b from-[#e8f2ff] to-[#f6f9ff]">
                 {/* Brand */}
                 <div className="px-6 pt-6">
                     <div className="flex items-center justify-center">
-                        <img src={LogoABA} alt="ABA PAY" className="h-8 w-auto" />
+                        <img src={ABAPayLogo} alt="ABA Pay" className="h-8 w-auto" />
                     </div>
                     <div className="h-10" />
                 </div>
 
-                {/* Card shell is animated; the QR node itself stays static */}
+                {/* Card */}
                 <motion.div
                     className="mx-6 mb-6"
                     initial={{ y: 24, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ type: "spring", stiffness: 110, damping: 16 }}
                 >
-                    <SvgPaymentCard>
+                    <CardShell>
                         <div className="flex flex-col h-full">
-                            <NotchedHeader title={title} />
+                            <div className="rounded-t-[20px] overflow-hidden">
+                                <NotchedHeader />
+                            </div>
 
                             {/* Merchant + amount */}
                             <div className="px-6 pt-3">
@@ -68,7 +84,7 @@ export default function QRPayment({
                                     currency={currency}
                                     inline
                                 />
-                                <div className="mt-2 border-t border-dashed border-slate-200" />
+                                <div className="mt-2 border-t border-dashed border-slate-300/70" />
                             </div>
 
                             {/* QR */}
@@ -78,27 +94,29 @@ export default function QRPayment({
                                         isExpired ? "grayscale-[.9] brightness-95" : ""
                                     }`}
                                     style={{
-                                        width: QR_PIXELS,
-                                        height: QR_PIXELS,
-                                        // Prevent subtle clipping/blur on iOS Safari
+                                        width: qrPixels,
+                                        height: qrPixels,
                                         contain: "paint",
                                         isolation: "isolate",
                                         backfaceVisibility: "hidden",
                                         WebkitBackfaceVisibility: "hidden",
+                                        WebkitFontSmoothing: "antialiased",
                                     }}
                                 >
                                     {hasQr ? (
                                         <QRCodeSVG
-                                            aria-label="Payment QR Code"
+                                            aria-label={`Payment QR code for ${safeMerchant || "merchant"}, ${
+                                                typeof displayAmount === "number" ? displayAmount : ""
+                                            } ${currency}`}
                                             value={qrString}
-                                            size={QR_PIXELS}
+                                            size={qrPixels}
                                             level="H"
                                             includeMargin={true}
                                             fgColor="#000000"
                                             bgColor="#FFFFFF"
                                             style={{
-                                                width: `${QR_PIXELS}px`,
-                                                height: `${QR_PIXELS}px`,
+                                                width: `${qrPixels}px`,
+                                                height: `${qrPixels}px`,
                                                 display: "block",
                                                 verticalAlign: "top",
                                                 shapeRendering: "crispEdges",
@@ -117,15 +135,13 @@ export default function QRPayment({
                                     >
                                         <div
                                             className="rounded-full shadow ring-1 ring-slate-200 bg-white grid place-items-center"
-                                            style={{
-                                                width: centerBadgeSize,
-                                                height: centerBadgeSize,
-                                            }}
+                                            style={{ width: centerBadgeSize, height: centerBadgeSize }}
                                         >
                                             <CurrencyLogo
                                                 size={centerBadgeSize}
                                                 currency={currency}
                                                 withBorder={true}
+                                                aria-label={`${currency} currency badge`}
                                             />
                                         </div>
                                     </div>
@@ -134,7 +150,7 @@ export default function QRPayment({
                                     <AnimatePresence>
                                         {isExpired && (
                                             <motion.div
-                                                className="absolute inset-0 grid place-items-center"
+                                                className="absolute inset-0 grid place-items-center pointer-events-none"
                                                 initial={{ opacity: 0 }}
                                                 animate={{ opacity: 1 }}
                                                 exit={{ opacity: 0 }}
@@ -155,14 +171,19 @@ export default function QRPayment({
                                 </div>
                             </div>
                         </div>
-                    </SvgPaymentCard>
+                    </CardShell>
                 </motion.div>
 
-                {/* Timer */}
-                <div className="px-6 pb-6 text-center">
-          <span className="text-sm font-medium text-slate-600 tracking-wide">
+                {/* Timer + live region */}
+                <div className="px-6 pb-6 text-center text-slate-600">
+          <span className="text-sm font-medium tracking-wide">
             {mm}:{ss}
           </span>
+                    <div aria-live="polite" className="sr-only">
+                        {isExpired
+                            ? "QR code expired."
+                            : `QR code expires in ${mm} minutes ${ss} seconds.`}
+                    </div>
                 </div>
             </div>
         </div>

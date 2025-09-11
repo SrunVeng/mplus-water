@@ -1,11 +1,13 @@
+// src/pages/PaymentPage.jsx
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { useOrder } from "../context/OrderContext";
 import ProgressSteps from "../components/ProgressSteps";
 import SummaryCard from "../components/SummaryCard";
-import { useNavigate } from "react-router-dom";
 import ConfirmLeaveLink from "../components/ConfirmLeaveLink";
-import { motion } from "framer-motion";
 import AbaPayLogo from "../assets/aba_bank_logo.jpg";
+import { normalizeQrPayload } from "../utils/khqr";
 
 export default function PaymentPage() {
     const { state, enriched, amount, deliveryFee, grandTotal, reset } = useOrder();
@@ -15,13 +17,6 @@ export default function PaymentPage() {
 
     async function handlePay() {
         if (method !== "qr") {
-            console.log("Paying order with method:", method, {
-                state,
-                amount,
-                deliveryFee,
-                grandTotal,
-                items: enriched,
-            });
             alert("Payment success (demo).");
             reset();
             nav("/order/confirm");
@@ -30,9 +25,8 @@ export default function PaymentPage() {
 
         try {
             setLoading(true);
-
-            // Mock payload (normally from your backend)
-            const data = {
+            // mock payload - normally created server-side
+            const raw = {
                 qrString:
                     "00020101021230510016abaakhppxxx@abaa01153240906164357420208ABA Bank52044455530384054032.05802KH5915Sandbox Pentest6003BMC622905050127407162025053110g3323199540013F1BF016411FDA6814PWOnlinePW-2-06908purchase70030.06304B8D0",
                 amount: Number(grandTotal || 0),
@@ -40,18 +34,13 @@ export default function PaymentPage() {
                 status: { code: "0", message: "Success." },
                 merchantName: "Coming Soon QR",
             };
+            const payload = normalizeQrPayload(raw);
 
             nav("/order/payment/qr", {
                 state: {
-                    qrPayload: data,
-                    order: {
-                        items: enriched,
-                        amount,
-                        deliveryFee,
-                        grandTotal,
-                    },
+                    qrPayload: payload,
+                    order: { items: enriched, amount, deliveryFee, grandTotal },
                 },
-                replace: false,
             });
         } catch (e) {
             console.error(e);
@@ -72,7 +61,7 @@ export default function PaymentPage() {
             </div>
 
             <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Left column */}
+                {/* left */}
                 <section className="lg:col-span-2 rounded-3xl ring-1 ring-slate-200 bg-white shadow-sm p-6">
                     <h2 className="text-base font-semibold text-slate-900 mb-4">4 · Payment Method</h2>
 
@@ -144,29 +133,13 @@ export default function PaymentPage() {
                         </button>
                     </div>
 
-                    {/* Trust signals */}
-                    <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-slate-600">
-                        <div className="inline-flex items-center gap-2">
-                            <span className="inline-block h-2 w-2 rounded-full bg-emerald-500" />
-                            Secure checkout
-                        </div>
-                        <div className="inline-flex items-center gap-2">
-                            <span className="inline-block h-2 w-2 rounded-full bg-emerald-500" />
-                            No hidden fees
-                        </div>
-                        <div className="inline-flex items-center gap-2">
-                            <span className="inline-block h-2 w-2 rounded-full bg-emerald-500" />
-                            24/7 support
-                        </div>
-                    </div>
-
-                    {/* Primary CTA */}
+                    {/* CTA */}
                     <div className="mt-8">
                         <motion.button
                             onClick={handlePay}
                             disabled={loading}
                             style={{ touchAction: "manipulation" }}
-                            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl bg-indigo-600 text-white px-6 py-3 font-semibold shadow-lg hover:bg-indigo-700 disabled:opacity-60 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300"
+                            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl bg-indigo-600 text-white px-6 py-3 font-semibold shadow-lg hover:bg-indigo-700 disabled:opacity-60 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300 min-h-[44px]"
                             whileHover={!loading ? { scale: 1.02 } : {}}
                             whileTap={!loading ? { scale: 0.98 } : {}}
                             animate={
@@ -197,7 +170,7 @@ export default function PaymentPage() {
                             confirmText="You have an in-progress order. If you leave now, your changes may be lost."
                             confirmLabel="Leave"
                             cancelLabel="Stay"
-                            className="w-full px-4 py-2 rounded-xl border border-slate-300 hover:border-slate-900 text-center"
+                            className="w-full px-4 py-2 rounded-xl border border-slate-300 hover:border-slate-900 text-center min-h-[44px]"
                         >
                             Leave to Home
                         </ConfirmLeaveLink>
@@ -207,14 +180,14 @@ export default function PaymentPage() {
                             confirmText="You’re about to leave the checkout. Your current order won’t be submitted."
                             confirmLabel="Go to Support"
                             cancelLabel="Stay"
-                            className="w-full px-4 py-2 rounded-xl border border-slate-300 hover:border-slate-900 text-center"
+                            className="w-full px-4 py-2 rounded-xl border border-slate-300 hover:border-slate-900 text-center min-h-[44px]"
                         >
                             Contact Support
                         </ConfirmLeaveLink>
                     </div>
                 </section>
 
-                {/* Right column */}
+                {/* right */}
                 <SummaryCard items={enriched} amount={amount} deliveryFee={deliveryFee} grandTotal={grandTotal} />
             </div>
         </div>
