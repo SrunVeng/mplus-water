@@ -1,9 +1,12 @@
-// src/components/payments/QRPayment/QRPayment.jsx
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { motion, AnimatePresence } from "framer-motion";
+
+// time + dom utils
 import { useCountdown, timeParts } from "../../../utils/time";
-import { computeResponsiveQrPixels } from "../../../utils/dom";
+import { useMeasure, computeQrPixelsFromWidth } from "../../../utils/dom.js";
+
+// shared UI
 import NotchedHeader from "./NotchedHeader";
 import MerchantWordmark from "./MerchantWordmark";
 import CurrencyLogo from "./CurrencyLogo";
@@ -23,23 +26,13 @@ export default function QRPayment({
     const currency = payload?.currency || "USD";
     const safeMerchant = merchantName || payload?.merchantName || "";
 
-    // Responsive QR size
-    const [qrPixels, setQrPixels] = useState(176);
-    useEffect(() => {
-        const recalc = () => {
-            const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-            setQrPixels(computeResponsiveQrPixels(vw));
-        };
-        recalc();
-        window.addEventListener("resize", recalc);
-        return () => window.removeEventListener("resize", recalc);
-    }, []);
+    // Container-measured sizing (works reliably on all mobile widths)
+    const [qrWrapRef, wrapWidth] = useMeasure();
+    const qrPixels = useMemo(() => computeQrPixelsFromWidth(wrapWidth), [wrapWidth]);
 
     // amount display
     const displayAmount = useMemo(() => {
-        if (typeof amount === "number") {
-            return amount;
-        }
+        if (typeof amount === "number") return amount;
         return amount ?? "—";
     }, [amount]);
 
@@ -49,7 +42,12 @@ export default function QRPayment({
     const { mm, ss } = timeParts(remainingMs);
     const isExpired = remainingMs <= 0;
 
-    const centerBadgeSize = Math.max(40, Math.floor(qrPixels * 0.18));
+    // badge scales with QR pixels, clamped
+    const centerBadgeSize = useMemo(() => {
+        const s = Math.floor((qrPixels || 160) * 0.18);
+        return Math.min(Math.max(s, 40), 72);
+    }, [qrPixels]);
+
     const hasQr = typeof qrString === "string" && qrString.length > 0;
 
     return (
@@ -58,7 +56,7 @@ export default function QRPayment({
                 {/* Brand */}
                 <div className="px-6 pt-6">
                     <div className="flex items-center justify-center">
-                        <img src={ABAPayLogo} alt="ABA Pay" className="h-8 w-auto" />
+                        <img src={ABAPayLogo} alt={title} className="h-8 w-auto" />
                     </div>
                     <div className="h-10" />
                 </div>
@@ -72,7 +70,8 @@ export default function QRPayment({
                 >
                     <CardShell>
                         <div className="flex flex-col h-full">
-                            <div className="rounded-t-[20px] overflow-hidden">
+                            {/* Keep notch visible on small screens */}
+                            <div className="rounded-t-[20px]">
                                 <NotchedHeader />
                             </div>
 
@@ -88,15 +87,18 @@ export default function QRPayment({
                             </div>
 
                             {/* QR */}
-                            <div className="px-6 py-4 flex items-center justify-center">
+                            <div className="px-6 pt-2 pb-6 -mt-1 flex items-center justify-center">
                                 <div
-                                    className={`relative leading-none ${
-                                        isExpired ? "grayscale-[.9] brightness-95" : ""
-                                    }`}
+                                    ref={qrWrapRef}
+                                    className={[
+                                        "relative leading-none",
+                                        isExpired ? "grayscale-[.9] brightness-95" : "",
+                                        // fluid square wrapper; width driven by layout, not viewport
+                                        "w-full max-w-xs sm:max-w-sm md:max-w-md",
+                                        "aspect-square",
+                                    ].join(" ")}
                                     style={{
-                                        width: qrPixels,
-                                        height: qrPixels,
-                                        contain: "paint",
+                                        contain: "layout paint",
                                         isolation: "isolate",
                                         backfaceVisibility: "hidden",
                                         WebkitBackfaceVisibility: "hidden",
@@ -109,21 +111,24 @@ export default function QRPayment({
                                                 typeof displayAmount === "number" ? displayAmount : ""
                                             } ${currency}`}
                                             value={qrString}
-                                            size={qrPixels}
+                                            size={qrPixels || 144}
                                             level="H"
-                                            includeMargin={true}
+                                            includeMargin
                                             fgColor="#000000"
                                             bgColor="#FFFFFF"
                                             style={{
-                                                width: `${qrPixels}px`,
-                                                height: `${qrPixels}px`,
+                                                width: `${qrPixels || 144}px`,
+                                                height: `${qrPixels || 144}px`,
+                                                position: "absolute",
+                                                inset: 0,
+                                                margin: "auto",
                                                 display: "block",
                                                 verticalAlign: "top",
                                                 shapeRendering: "crispEdges",
                                             }}
                                         />
                                     ) : (
-                                        <div className="w-full h-full grid place-items-center rounded bg-slate-100 text-slate-500 text-xs">
+                                        <div className="absolute inset-0 grid place-items-center rounded bg-slate-100 text-slate-500 text-xs">
                                             QR unavailable
                                         </div>
                                     )}
@@ -140,7 +145,7 @@ export default function QRPayment({
                                             <CurrencyLogo
                                                 size={centerBadgeSize}
                                                 currency={currency}
-                                                withBorder={true}
+                                                withBorder
                                                 aria-label={`${currency} currency badge`}
                                             />
                                         </div>
@@ -155,6 +160,7 @@ export default function QRPayment({
                                                 animate={{ opacity: 1 }}
                                                 exit={{ opacity: 0 }}
                                             >
+
                         <span className="px-2.5 py-1 rounded-md bg-slate-900 text-white text-xs font-bold shadow">
                           Expired
                         </span>

@@ -1,40 +1,58 @@
 // src/utils/time.js
 import { useEffect, useRef, useState } from "react";
 
-/** Returns mm:ss parts from ms */
-export function timeParts(ms = 0) {
-    const clamped = Math.max(0, ms);
-    const totalSeconds = Math.floor(clamped / 1000);
-    const m = Math.floor(totalSeconds / 60);
-    const s = totalSeconds % 60;
-    return {
-        mm: String(m).padStart(2, "0"),
-        ss: String(s).padStart(2, "0"),
-    };
-}
-
-/** Countdown from totalMs to 0; calls onEnd exactly once. */
-export function useCountdown(totalMs, onEnd) {
-    const [remaining, setRemaining] = useState(totalMs);
-    const endedRef = useRef(false);
+export function useCountdown(totalMs, onExpired) {
+    const [remaining, setRemaining] = useState(() => Math.max(0, totalMs || 0));
+    const expiredCalledRef = useRef(false);
 
     useEffect(() => {
-        const start = performance.now();
-        const tick = (t) => {
-            const elapsed = t - start;
-            const left = Math.max(0, totalMs - elapsed);
-            setRemaining(left);
-            if (left <= 0 && !endedRef.current) {
-                endedRef.current = true;
-                onEnd?.();
-                return;
-            }
-            rafId.current = requestAnimationFrame(tick);
-        };
-        const rafId = { current: requestAnimationFrame(tick) };
-        return () => cancelAnimationFrame(rafId.current);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        setRemaining(Math.max(0, totalMs || 0));
+        expiredCalledRef.current = false;
     }, [totalMs]);
 
+    useEffect(() => {
+        if (remaining <= 0) {
+            if (!expiredCalledRef.current && typeof onExpired === "function") {
+                expiredCalledRef.current = true;
+                onExpired();
+            }
+            return; // no timer if already expired
+        }
+
+        // Use a high-resolution but not-too-frequent tick
+        const startedAt = Date.now();
+        const startRemaining = remaining;
+
+        const id = setInterval(() => {
+            const elapsed = Date.now() - startedAt;
+            const next = Math.max(0, startRemaining - elapsed);
+            setRemaining(next);
+
+            if (next <= 0) {
+                clearInterval(id);
+                if (!expiredCalledRef.current && typeof onExpired === "function") {
+                    expiredCalledRef.current = true;
+                    onExpired();
+                }
+            }
+        }, 250);
+
+        return () => clearInterval(id);
+    }, [remaining, onExpired]);
+
     return remaining;
+}
+
+/**
+ * timeParts
+ * Converts milliseconds -> { mm, ss } (zero-padded strings).
+ */
+export function timeParts(ms) {
+    const totalSec = Math.max(0, Math.floor((ms || 0) / 1000));
+    const mm = Math.floor(totalSec / 60);
+    const ss = totalSec % 60;
+    return {
+        mm: String(mm).padStart(2, "0"),
+        ss: String(ss).padStart(2, "0"),
+    };
 }

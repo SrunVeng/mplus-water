@@ -1,11 +1,51 @@
-// src/utils/dom.js
+import { useEffect, useRef, useState } from "react";
 
-/** clamp a number between min and max */
-export const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
+/**
+ * useMeasure
+ * Returns [ref, width] for the element; uses ResizeObserver.
+ */
+export function useMeasure() {
+    const ref = useRef(null);
+    const [width, setWidth] = useState(0);
 
-/** responsive QR pixels based on viewport width, returns an integer */
-export function computeResponsiveQrPixels(vw) {
-    // phones get a large QR; desktops keep it sane
-    // clamp(160px, 60vw, 232px)
-    return Math.floor(clamp(vw * 0.60, 160, 232));
+    useEffect(() => {
+        if (!ref.current) return;
+
+        // Fallback for environments without RO
+        if (typeof ResizeObserver === "undefined") {
+            setWidth(ref.current.getBoundingClientRect().width || 0);
+            return;
+        }
+
+        const ro = new ResizeObserver((entries) => {
+            const entry = entries[0];
+            if (!entry) return;
+            setWidth(entry.contentRect.width || 0);
+        });
+
+        ro.observe(ref.current);
+        return () => ro.disconnect();
+    }, []);
+
+    return [ref, width];
+}
+
+/**
+ * computeQrPixelsFromWidth
+ * Convert measured container width -> crisp QR pixel size.
+ * Render the QR at explicit pixels so the modules stay sharp.
+ */
+export function computeQrPixelsFromWidth(
+    containerWidth,
+    {
+        min = 144,   // good lower bound for scan reliability
+        max = 400,   // bump to 512 if you want larger on desktop
+        padding = 3, // tiny breathing room
+        scale = 0.90 // slightly under container to account for rounding/margins
+    } = {}
+) {
+    const w = Math.max(0, Number(containerWidth) || 0);
+    const inner = Math.max(0, (w - padding) * scale);
+    const px = Math.floor(inner);
+    return Math.max(min, Math.min(max, px));
 }

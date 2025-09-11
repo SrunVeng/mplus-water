@@ -45,3 +45,21 @@ export const sandLevels = (remainingMs, totalMs) => {
 
 
 
+export function cn(...classes) {
+    return classes.filter(Boolean).join(" ");
+}
+
+export function statusTone(tone) {
+    switch (tone) {
+        case "emerald":
+            return { text: "text-emerald-700", bg: "bg-emerald-50", ring: "ring-emerald-200" };
+        case "rose":
+            return { text: "text-rose-700", bg: "bg-rose-50", ring: "ring-rose-200" };
+        case "amber":
+            return { text: "text-amber-800", bg: "bg-amber-50", ring: "ring-amber-200" };
+        case "sky":
+            return { text: "text-sky-700", bg: "bg-sky-50", ring: "ring-sky-200" };
+        default:
+            return { text: "text-slate-700", bg: "bg-slate-50", ring: "ring-slate-200" };
+    }
+}
