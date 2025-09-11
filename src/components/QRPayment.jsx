@@ -1,6 +1,6 @@
 // src/components/QRPayment.jsx
 import React, { useMemo } from "react";
-import { QRCodeCanvas } from "qrcode.react";
+import { QRCodeSVG  } from "qrcode.react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCountdown, timeParts } from "../utils/uiUtils.js";
 import LogoABA from "../assets/ABAPay.svg";
@@ -83,17 +83,20 @@ export default function QRPayment({
                                     }`}
                                     style={{ width: QR_PIXELS, height: QR_PIXELS }}
                                 >
-                                    <QRCodeCanvas
+                                    <QRCodeSVG
                                         aria-label="Payment QR Code"
                                         value={qrString}
-                                        size={QR_PIXELS}
+                                        size={QR_PIXELS}          // 144
                                         level="H"
                                         includeMargin={true}
+                                        fgColor="#000000"
+                                        bgColor="#FFFFFF"
                                         style={{
                                             width: `${QR_PIXELS}px`,
                                             height: `${QR_PIXELS}px`,
                                             display: "block",
                                             verticalAlign: "top",
+                                            shapeRendering: "crispEdges", // helps Safari keep edges sharp
                                         }}
                                     />
 
