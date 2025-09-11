@@ -29,11 +29,11 @@ export default function InfoPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             {/* Header */}
             <div className="flex items-start justify-between gap-4">
-                <div>
-                    <h1 className="text-2xl font-semibold tracking-tight">Create Order</h1>
-                    <p className="mt-1 text-sm text-slate-600">Step 1 of 3 · Tell us who and where to deliver</p>
+                <div className="px-4 sm:px-0 text-center sm:text-left">
+                    <h1 className="text-xl sm:text-xl md:text-2xl font-semibold tracking-tight">
+                        Create Order
+                    </h1>
                 </div>
-
                 <ProgressSteps
                     current={1}
                     maxAllowedStep={steps?.info ? 2 : 1}
