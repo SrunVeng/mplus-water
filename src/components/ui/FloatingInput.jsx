@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useId } from "react";
 import { cn } from "../../utils/uiUtils.js";
 
 /**
@@ -6,6 +6,7 @@ import { cn } from "../../utils/uiUtils.js";
  * Uses placeholder=" " + peer to animate label on focus and when filled.
  */
 export default function FloatingInput({
+                                          id,
                                           label,
                                           required,
                                           icon,
@@ -19,6 +20,8 @@ export default function FloatingInput({
                                           ...rest
                                       }) {
     const hasIcon = Boolean(icon);
+    const autoId = useId();
+    const inputId = id ?? `fi-${autoId}`;
 
     return (
         <div className={cn("relative group", containerClassName)}>
@@ -29,11 +32,13 @@ export default function FloatingInput({
             )}
 
             <input
+                id={inputId}
                 type={type}
                 value={value}
                 onChange={onChange}
                 placeholder={placeholder}
                 required={required}
+                aria-required={required || undefined}
                 className={cn(
                     "peer w-full h-12 rounded-xl border text-sm",
                     "border-slate-300 focus:border-brand-600 focus:ring-1 focus:ring-brand-600",
@@ -46,14 +51,12 @@ export default function FloatingInput({
 
             {/* Floating label */}
             <label
+                htmlFor={inputId}
                 className={cn(
                     "absolute text-slate-500 text-sm transition-all px-1 bg-white",
-                    // default (placeholder shown)
                     "top-1/2 -translate-y-1/2",
-                    // move up when focused or when has value
                     "peer-focus:top-1.5 peer-focus:text-xs peer-focus:text-brand-600",
                     "peer-[&:not(:placeholder-shown)]:top-1.5 peer-[&:not(:placeholder-shown)]:text-xs",
-                    // left with or without icon
                     hasIcon ? "left-10" : "left-3",
                     labelClassName
                 )}

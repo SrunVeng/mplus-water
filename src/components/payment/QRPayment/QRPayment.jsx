@@ -69,7 +69,7 @@ export default function QRPayment({
                     transition={{ type: "spring", stiffness: 110, damping: 16 }}
                 >
                     <CardShell>
-                        <div className="flex flex-col h-full">
+                        <div className="flex flex-col h-full w-full">
                             {/* Keep notch visible on small screens */}
                             <div className="rounded-t-[20px]">
                                 <NotchedHeader />

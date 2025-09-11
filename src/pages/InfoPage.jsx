@@ -7,15 +7,12 @@ import { useOrder } from "../context/OrderContext";
 import { useOrderProgress } from "../context/OrderProgressContext";
 import ProgressSteps from "../components/ProgressSteps";
 import AddressFields from "../components/AddressFields";
-import PhoneInputKH from "../components/PhoneInputKH";
-import { formatPhoneKH } from "../utils/khPhone";
 import { validateInfoForm, requestUserLocation, continueFromInfo } from "../utils/validation.js";
 
 // UI helpers/components
 import SectionCard from "../components/ui/SectionCard";
 import StatusPill from "../components/ui/StatusPill";
 import FloatingInput from "../components/ui/FloatingInput";
-import FloatingField from "../components/ui/FloatingField"; // for non-native inputs like PhoneInputKH
 import { cn } from "../utils/uiUtils.js";
 
 export default function InfoPage() {
@@ -79,24 +76,14 @@ export default function InfoPage() {
                                     placeholder=" " // needed for floating behavior
                                 />
 
-                                <FloatingField
-                                    label="Phone (Cambodia)"
+                                <FloatingInput
+                                    label="Phone Number"
                                     required
-                                    icon={<Phone className="h-4 w-4" />}
-                                    hint={
-                                        state.form.phoneRaw
-                                            ? `Will send as ${formatPhoneKH(state.form.phoneRaw)}`
-                                            : undefined
-                                    }
-                                    isFilled={Boolean(state.form.phoneRaw)}
-                                >
-                                    {/* PhoneInputKH might not support placeholder=" " so we use the generic FloatingField */}
-                                    <PhoneInputKH
-                                        value={state.form.phoneRaw}
-                                        onChange={(v) => formUpdate("phoneRaw", v)}
-                                        className="w-full h-12 rounded-xl border text-sm border-slate-300 focus:border-brand-600 focus:ring-1 focus:ring-brand-600 transition px-3"
-                                    />
-                                </FloatingField>
+                                    icon={<User className="h-4 w-4" />}
+                                    value={state.form.phoneRaw}
+                                    onChange={(e) => formUpdate("phoneRaw", e.target.value)}
+                                    placeholder=" " // needed for floating behavior
+                                />
 
                                 <FloatingInput
                                     label="Email (optional)"
