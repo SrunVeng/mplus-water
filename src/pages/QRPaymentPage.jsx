@@ -11,7 +11,7 @@ export default function QRPaymentPage() {
     const location = useLocation();
     const { enriched, amount, deliveryFee, grandTotal } = useOrder();
 
-    // Prefer router state, fall back to context if user refreshed
+    // Prefer router state; fallback to context if user refreshed.
     const routerState = location.state || {};
     const initialOrder = routerState.order || {
         items: enriched,
@@ -24,14 +24,14 @@ export default function QRPaymentPage() {
     const [qrPayload, setQrPayload] = useState(initialQR);
     const [qrExpired, setQrExpired] = useState(false);
 
-    // If we have nothing to show (e.g., direct visit), bounce back to Payment
+    // If direct visit without payload, go back to payment method selection.
     useEffect(() => {
         if (!qrPayload) {
             nav("/order/payment", { replace: true });
         }
     }, [qrPayload, nav]);
 
-    if (!qrPayload) return null; // brief guard while redirecting
+    if (!qrPayload) return null;
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -46,7 +46,6 @@ export default function QRPaymentPage() {
                         <h2 className="text-base font-semibold text-slate-900">4 · Payment · ABA Pay</h2>
 
                         <div className="flex items-center gap-3">
-                            {/* Cancel payment with confirmation */}
                             <ConfirmLeaveLink
                                 to="/order/payment"
                                 title="Cancel payment?"
@@ -62,8 +61,10 @@ export default function QRPaymentPage() {
 
                     <div className="mt-6">
                         <QRPayment
+                            key={qrPayload?.qrString ?? "qr"}
                             payload={qrPayload}
                             merchantName={qrPayload.merchantName || "QR"}
+                            title
                             minutesToExpire={5}
                             onExpired={() => setQrExpired(true)}
                             note="Scan with ABA Mobile or any KHQR-supported banking app"
