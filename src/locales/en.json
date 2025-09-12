@@ -45,8 +45,6 @@
   "a11y.next": "Next",
   "a11y.slide": "Slide {{num}}",
 
-
-
   "products": {
     "1": {
       "name": "M PLUS 1.5L",
@@ -63,7 +61,119 @@
       "desc": "Medium size, ideal for sports",
       "details": ["BPA-free bottle", "Balanced pH", "Case of 12 available"]
     }
-  }
+  },
+
+  "order.create_title": "Create Order",
+  "order.customer_delivery_title": "Customer & Delivery",
+  "order.customer_title": "Customer",
+  "order.customer_subtitle": "How can the rider reach you?",
+  "order.full_name": "Full name",
+  "order.phone_number": "Phone Number",
+  "order.email_optional": "Email (optional)",
+  "order.delivery_address_title": "Delivery address",
+  "order.delivery_address_subtitle": "Where should we deliver your order?",
+  "order.locating": "Detecting your location…",
+  "order.update_location": "Update my location",
+  "order.use_my_location": "Use my current location",
+  "order.location_set": "Location set",
+  "order.permission_denied": "Permission denied",
+  "order.location_hint": "Optional but helps riders find you faster",
+  "order.continue_to_products": "Continue to Products",
+  "order.tips_title": "Tips",
+
+  "address.province": "Province / City",
+  "address.district": "District / Khan / City",
+  "address.commune": "Commune / Sangkat",
+  "address.village": "Village",
+  "address.street": "Street",
+
+  "order.tip_delivery_fee": "Delivery fee: $2 in Phnom Penh · $5 outside · free on orders over $100",
+  "order.tip_location_help": "Sharing your location helps our riders find you faster.",
+
+  "address.search_placeholder": "Type to filter...",
+  "address.no_results": "No results",
+  "address.select_province": "Select Province/City",
+  "address.select_district": "Select District",
+  "address.select_commune": "Select Commune",
+  "address.select_village": "Select Village",
+  "address.street_placeholder": "Street name / number",
+
+  "order.products_title": "Products",
+  "order.products_subtitle": "Select items and quantities.",
+  "order.add_product": "Add product",
+  "order.back": "Back",
+  "order.continue_to_review": "Continue to Review",
+
+  "order.product_label": "Product",
+  "order.product_select_aria": "Choose product",
+  "order.qty": "Qty",
+  "order.line_total": "Line total",
+  "order.remove": "Remove",
+  "order.remove_hint": "Remove item",
+  "order.remove_disabled_hint": "At least one item required",
+
+  "order.remove_confirm": "Remove this item?",
+  "order.qty_decrease": "Decrease quantity",
+  "order.qty_increase": "Increase quantity",
+
+  "order.items": "Items",
+  "order.edit_products": "Edit products",
+  "order.go_to_payment": "Go to Payment",
+
+  "order.summary_title": "Order summary",
+  "order.summary_subtotal": "Subtotal",
+  "order.summary_shipping": "Shipping",
+  "order.summary_total": "Order total",
+  "unknown_product": "Unknown product",
+
+
+  "order.payment_title": "Payment Method",
+  "order.pay_aba": "ABA Pay",
+  "order.pay_aba_desc": "Pay instantly by scanning with your banking app.",
+  "order.pay_cod": "Cash on Delivery",
+  "order.pay_cod_desc": "Pay the courier when your order arrives.",
+  "order.selected": "Selected",
+  "order.pay_cta_qr_preparing": "Preparing QR…",
+  "order.pay_cta_qr": "Pay with ABA Pay",
+  "order.pay_cta_cod": "Pay on Delivery",
+  "order.payment_hint": "You can review your order details on the next screen before completing payment.",
+  "order.pay_success_demo": "Payment success (demo).",
+  "order.pay_start_error": "Could not start ABA Pay right now. Please try again.",
+
+  "order.leave_title": "Leave this page?",
+  "order.leave_confirm_text": "You have an in-progress order. If you leave now, your changes may be lost.",
+  "order.leave_confirm_leave": "Leave",
+  "order.leave_confirm_stay": "Stay",
+  "order.leave_home": "Leave to Home",
+
+  "order.contact_title": "Contact support?",
+  "order.contact_confirm_text": "You’re about to leave the checkout. Your current order won’t be submitted.",
+  "order.contact_confirm_go": "Go to Support",
+  "order.contact_confirm_stay": "Stay",
+  "order.contact_support": "Contact Support",
+
+  "title": "ABA PAY",
+  "note": "Scan with ABA Mobile or any KHQR-supported banking app",
+  "qr_unavailable": "QR unavailable",
+  "expired": "Expired",
+  "merchant_fallback": "merchant",
+  "qr_aria_label": "Payment QR code for {{merchant}}, {{amount}} {{currency}}",
+  "currency_badge_aria": "{{currency}} currency badge",
+  "aria_expired": "QR code expired.",
+  "aria_expires_in": "QR code expires in {{mm}} minutes {{ss}} seconds.",
+  "order.ship_to": "Ship to",
+
+  "aria_label": "Progress",
+  "mobile_label": "Step {{step}} of {{total}}",
+  "step_aria": "Step {{index}} of {{total}}",
+
+  "step_heading": "4 · Payment · ABA Pay",
+  "cancel_title": "Cancel payment?",
+  "cancel_confirm_text": "Your KHQR payment is in progress. Are you sure you want to cancel and go back?",
+  "cancel_confirm_label": "Cancel Payment",
+  "cancel_stay_label": "Stay",
+  "cancel_button": "Cancel payment",
+  "expired_banner": "The KHQR has expired. Go back and click <strong>Pay with ABA Pay</strong> again to generate a fresh code."
 
 
 }

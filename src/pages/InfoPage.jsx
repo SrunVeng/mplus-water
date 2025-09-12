@@ -1,7 +1,9 @@
+// src/pages/InfoPage.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MapPin, Phone, Mail, User, Loader2, CheckCircle2, AlertCircle, ArrowRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { useOrder } from "../context/OrderContext";
 import { useOrderProgress } from "../context/OrderProgressContext";
@@ -16,6 +18,7 @@ import FloatingInput from "../components/ui/FloatingInput";
 import { cn } from "../utils/uiUtils.js";
 
 export default function InfoPage() {
+    const { t } = useTranslation();
     const { state, formUpdate, setLocation } = useOrder();
     const { steps, setSteps } = useOrderProgress();
     const nav = useNavigate();
@@ -31,7 +34,7 @@ export default function InfoPage() {
             <div className="flex items-start justify-between gap-4">
                 <div className="px-4 sm:px-0 text-center sm:text-left">
                     <h1 className="text-xl sm:text-xl md:text-2xl font-semibold tracking-tight">
-                        Create Order
+                        {t("order.create_title")}
                     </h1>
                 </div>
                 <ProgressSteps
@@ -52,7 +55,9 @@ export default function InfoPage() {
                     <div className="border-b border-slate-100 px-6 py-4 rounded-t-3xl bg-gradient-to-br from-slate-50 to-white">
                         <div className="flex items-center gap-2 text-slate-900">
                             <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-600 text-white text-xs font-bold">1</span>
-                            <h2 className="text-base font-semibold">Customer & Delivery</h2>
+                            <h2 className="text-base font-semibold">
+                                {t("order.customer_delivery_title")}
+                            </h2>
                         </div>
                     </div>
 
@@ -65,28 +70,31 @@ export default function InfoPage() {
                         noValidate
                     >
                         {/* Customer */}
-                        <SectionCard title="Customer" subtitle="How can the rider reach you?">
+                        <SectionCard
+                            title={t("order.customer_title")}
+                            subtitle={t("order.customer_subtitle")}
+                        >
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <FloatingInput
-                                    label="Full name"
+                                    label={t("order.full_name")}
                                     required
                                     icon={<User className="h-4 w-4" />}
                                     value={state.form.name}
                                     onChange={(e) => formUpdate("name", e.target.value)}
-                                    placeholder=" " // needed for floating behavior
+                                    placeholder=" "
                                 />
 
                                 <FloatingInput
-                                    label="Phone Number"
+                                    label={t("order.phone_number")}
                                     required
-                                    icon={<User className="h-4 w-4" />}
+                                    icon={<Phone className="h-4 w-4" />}
                                     value={state.form.phoneRaw}
                                     onChange={(e) => formUpdate("phoneRaw", e.target.value)}
-                                    placeholder=" " // needed for floating behavior
+                                    placeholder=" "
                                 />
 
                                 <FloatingInput
-                                    label="Email (optional)"
+                                    label={t("order.email_optional")}
                                     type="email"
                                     icon={<Mail className="h-4 w-4" />}
                                     value={state.form.email}
@@ -97,7 +105,11 @@ export default function InfoPage() {
                         </SectionCard>
 
                         {/* Address */}
-                        <SectionCard className="mt-6" title="Delivery address" subtitle="Where should we deliver your order?">
+                        <SectionCard
+                            className="mt-6"
+                            title={t("order.delivery_address_title")}
+                            subtitle={t("order.delivery_address_subtitle")}
+                        >
                             <AddressFields form={state.form} onChange={formUpdate} />
 
                             <div className="mt-4 flex flex-wrap items-center gap-3">
@@ -114,12 +126,12 @@ export default function InfoPage() {
                                     {geoRequesting ? (
                                         <>
                                             <Loader2 className="h-4 w-4 animate-spin" />
-                                            Detecting your location…
+                                            {t("order.locating")}
                                         </>
                                     ) : (
                                         <>
                                             <MapPin className="h-4 w-4" />
-                                            {state.form.geoSet ? "Update my location" : "Use my current location"}
+                                            {state.form.geoSet ? t("order.update_location") : t("order.use_my_location")}
                                         </>
                                     )}
                                 </button>
@@ -127,15 +139,15 @@ export default function InfoPage() {
                                 {geoSuccess ? (
                                     <StatusPill tone="emerald">
                                         <CheckCircle2 className="h-3.5 w-3.5" />
-                                        <span>Location set</span>
+                                        <span>{t("order.location_set")}</span>
                                     </StatusPill>
                                 ) : geoError ? (
                                     <StatusPill tone="rose">
                                         <AlertCircle className="h-3.5 w-3.5" />
-                                        <span>Permission denied</span>
+                                        <span>{t("order.permission_denied")}</span>
                                     </StatusPill>
                                 ) : (
-                                    <span className="text-xs text-slate-500">Optional but helps riders find you faster</span>
+                                    <span className="text-xs text-slate-500">{t("order.location_hint")}</span>
                                 )}
                             </div>
                         </SectionCard>
@@ -153,7 +165,7 @@ export default function InfoPage() {
                                 )}
                                 aria-disabled={!isInfoValid}
                             >
-                                Continue to Products
+                                {t("order.continue_to_products")}
                                 <ArrowRight className="h-4 w-4" />
                             </button>
                         </div>
@@ -163,13 +175,14 @@ export default function InfoPage() {
                 {/* Right: Tips */}
                 <aside className="lg:col-span-1">
                     <div className="sticky top-6 rounded-2xl ring-1 ring-slate-200 bg-white p-6">
-                        <h3 className="text-base font-semibold">Tips</h3>
+                        <h3 className="text-base font-semibold">{t("order.tips_title")}</h3>
                         <ul className="mt-3 list-disc list-inside text-sm text-slate-600 space-y-1">
-                            <li>Delivery fee: $2 Phnom Penh / $5 outside / free over $100</li>
-                            <li>Location helps our riders find you faster</li>
+                            <li>{t("order.tip_delivery_fee")}</li>
+                            <li>{t("order.tip_location_help")}</li>
                         </ul>
                     </div>
                 </aside>
+
             </div>
         </div>
     );

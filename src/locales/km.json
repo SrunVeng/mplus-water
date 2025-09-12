@@ -19,7 +19,7 @@
   "stats.delivery": "ដឹកជញ្ជូន",
   "stats.delivery_value": "រហ័ស",
 
-  "product_details.title": "ផលិតផលពួកយេីង",
+  "product_details.title": "ផលិតផលពួកយើង",
   "product_details.sub": "លក្ខណៈពិសេស អត្ថប្រយោជន៍ និងជម្រើសដឹកជញ្ជូន។",
   "product.water_quality": "គុណភាពទឹក",
   "product.water_quality_desc": "pH 7.2–7.6 · UV + RO + ការចម្រោះដោយមីក្រូណ៍។",
@@ -45,7 +45,6 @@
   "a11y.next": "ទៅមុខ",
   "a11y.slide": "ស្លាយ {{num}}",
 
-
   "products": {
     "1": {
       "name": "អឹម ផ្លាស់ 1.5L",
@@ -62,7 +61,121 @@
       "desc": "ទំហំមធ្យម សាកសមសម្រាប់កីឡា",
       "details": ["ដបគ្មាន BPA", "pH សមតុល្យ", "១កេស មាន12"]
     }
+  },
 
-}
+  "order.create_title": "បង្កើតការបញ្ជាទិញ",
+  "order.customer_delivery_title": "អតិថិជន និងការដឹកជញ្ជូន",
+  "order.customer_title": "អតិថិជន",
+  "order.customer_subtitle": "តើយើងអាចទំនាក់ទំនងអ្នកដោយរបៀបណា?",
+  "order.full_name": "ឈ្មោះពេញ",
+  "order.phone_number": "លេខទូរស័ព្ទ",
+  "order.email_optional": "អ៊ីមែល (ជាជម្រើស)",
+  "order.delivery_address_title": "អាសយដ្ឋានដឹកជញ្ជូន",
+  "order.delivery_address_subtitle": "យើងគួរដឹកជញ្ជូនទៅណា?",
+  "order.locating": "កំពុងកំណត់ទីតាំង...",
+  "order.update_location": "ធ្វើបច្ចុប្បន្នភាពទីតាំងរបស់ខ្ញុំ",
+  "order.use_my_location": "ប្រើទីតាំងបច្ចុប្បន្នរបស់ខ្ញុំ",
+  "order.location_set": "បានកំណត់ទីតាំង",
+  "order.permission_denied": "បានបដិសេធសិទ្ធិ",
+  "order.location_hint": "មិនចាំបាច់ ប៉ុន្តែជួយឲ្យអ្នកដឹកជញ្ជូនរកអ្នកបានលឿនជាងមុន",
+  "order.continue_to_products": "បន្តទៅផលិតផល",
+  "order.tips_title": "គន្លឹះ",
+
+  "address.province": "ខេត្ត / រាជធានី",
+  "address.district": "ស្រុក / ខណ្ឌ / ក្រុង",
+  "address.commune": "ឃុំ / សង្កាត់",
+  "address.village": "ភូមិ",
+  "address.street": "ផ្លូវ",
+  "order.tip_delivery_fee": "ថ្លៃដឹកជញ្ជូន៖ 2$ ក្នុងភ្នំពេញ · 5$ ខាងក្រៅ · ឥតគិតថ្លៃសម្រាប់ការបញ្ជាទិញលើសពី 100$",
+  "order.tip_location_help": "ការចែករំលែកទីតាំងជួយឲ្យអ្នកដឹកជញ្ជូនរកអ្នកបានលឿនជាងមុន។",
+
+  "address.search_placeholder": "វាយដើម្បីស្វែងរក...",
+  "address.no_results": "មិនមានលទ្ធផល",
+  "address.select_province": "ជ្រើសខេត្ត / រាជធានី",
+  "address.select_district": "ជ្រើសស្រុក / ខណ្ឌ / ក្រុង",
+  "address.select_commune": "ជ្រើសឃុំ / សង្កាត់",
+  "address.select_village": "ជ្រើសភូមិ",
+  "address.street_placeholder": "ផ្លូវ ឬ លេខផ្លូវ",
+
+
+  "order.products_title": "ផលិតផល",
+  "order.products_subtitle": "ជ្រើសរើសទំនិញ និងបរិមាណ។",
+  "order.add_product": "បន្ថែមផលិតផល",
+  "order.back": "ថយក្រោយ",
+  "order.continue_to_review": "បន្តទៅការពិនិត្យ",
+
+  "order.product_label": "ផលិតផល",
+  "order.product_select_aria": "ជ្រើសផលិតផល",
+  "order.qty": "ចំនួន",
+  "order.line_total": "តម្លៃជួរ",
+  "order.remove": "លុបចេញ",
+  "order.remove_hint": "លុបទំនិញ",
+  "order.remove_disabled_hint": "ត្រូវមានយ៉ាងហោចណាស់មួយធាតុ",
+
+  "order.remove_confirm": "លុបធាតុនេះឬ?",
+  "order.qty_decrease": "បន្ថយចំនួន",
+  "order.qty_increase": "បង្កើនចំនួន",
+
+  "order.items": "ទំនិញ",
+  "order.edit_products": "កែសម្រួលផលិតផល",
+  "order.go_to_payment": "ទៅកាន់ការទូទាត់",
+
+  "order.summary_title": "សង្ខេបការបញ្ជាទិញ",
+  "order.summary_subtotal": "សរុបរង",
+  "order.summary_shipping": "ដឹកជញ្ជូន",
+  "order.summary_total": "សរុប",
+  "unknown_product": "ផលិតផលមិនស្គាល់",
+
+  "order.payment_title": "វិធីទូទាត់",
+  "order.pay_aba": "ABA Pay",
+  "order.pay_aba_desc": "បង់ប្រាក់ភ្លាមៗ ដោយស្កេនតាមកម្មវិធីធនាគាររបស់អ្នក។",
+  "order.pay_cod": "បង់លុយពេលដឹកជញ្ជូន",
+  "order.pay_cod_desc": "បង់ប្រាក់ឱ្យអ្នកដឹកជញ្ជូននៅពេលទំនិញមកដល់។",
+  "order.selected": "បានជ្រើស",
+  "order.pay_cta_qr_preparing": "កំពុងរៀបចំ QR…",
+  "order.pay_cta_qr": "បង់តាម ABA Pay",
+  "order.pay_cta_cod": "បង់ពេលដឹកជញ្ជូន",
+  "order.payment_hint": "អ្នកអាចពិនិត្យព័ត៌មានការបញ្ជាទិញនៅទំព័របន្ទាប់ មុនពេលបញ្ចប់ការទូទាត់។",
+  "order.pay_success_demo": "បានទូទាត់ដោយជោគជ័យ (សាកល្បង)។",
+  "order.pay_start_error": "មិនអាចចាប់ផ្តើម ABA Pay នៅពេលនេះទេ។ សូមព្យាយាមម្ដងទៀត។",
+
+  "order.leave_title": "ចាកចេញពីទំព័រនេះ?",
+  "order.leave_confirm_text": "អ្នកមានការបញ្ជាទិញកំពុងដំណើរការ។ បើចាកចេញឥឡូវនេះ ទិន្នន័យរបស់អ្នកអាចបាត់បង់។",
+  "order.leave_confirm_leave": "ចាកចេញ",
+  "order.leave_confirm_stay": "នៅបន្ត",
+  "order.leave_home": "ត្រឡប់ទៅទំព័រដើម",
+
+  "order.contact_title": "ទាក់ទងជំនួយ?",
+  "order.contact_confirm_text": "អ្នកកំពុងចាកចេញពីការទូទាត់។ ការបញ្ជាទិញបច្ចុប្បន្នរបស់អ្នកនឹងមិនត្រូវដាក់ស្នើទេ។",
+  "order.contact_confirm_go": "ទៅកាន់ផ្នែកជំនួយ",
+  "order.contact_confirm_stay": "នៅបន្ត",
+  "order.contact_support": "ទាក់ទងផ្នែកជំនួយ",
+
+  "title": "ABA PAY",
+  "note": "ស្កេនដោយ ABA Mobile ឬ​ គណនីធនាគារណាមួយដែលគាំទ្រ KHQR",
+  "qr_unavailable": "មិនមាន QR",
+  "expired": "ផុតកំណត់",
+  "merchant_fallback": "ហាង",
+  "qr_aria_label": "QR សម្រាប់បង់ប្រាក់ទៅកាន់ {{merchant}} ចំនួន {{amount}} {{currency}}",
+  "currency_badge_aria": "និមិត្តសញ្ញារាជប្រាក់ {{currency}}",
+  "aria_expired": "QR បានផុតកំណត់។",
+  "aria_expires_in": "QR នឹងផុតកំណត់ក្រោយ {{mm}} នាទី {{ss}} វិនាទី។",
+
+  "order.ship_to": "ដឹកជញ្ជូនទៅ",
+
+  "aria_label": "វឌ្ឍនភាព",
+  "mobile_label": "ជំហានទី {{step}} នៃ {{total}}",
+  "step_aria": "ជំហានទី {{index}} នៃ {{total}}",
+
+  "step_heading": "៤ · ការបង់ប្រាក់ · ABA Pay",
+  "cancel_title": "បោះបង់ការបង់ប្រាក់?",
+  "cancel_confirm_text": "ការបង់ប្រាក់ KHQR កំពុងដំណើរការ។ តើអ្នកពិតជាចង់បោះបង់ ហើយត្រឡប់ក្រោយឬ?",
+  "cancel_confirm_label": "បោះបង់ការបង់ប្រាក់",
+  "cancel_stay_label": "នៅបន្ត",
+  "cancel_button": "បោះបង់ការបង់ប្រាក់",
+  "expired_banner": "QR បានផុតកំណត់។ សូមត្រឡប់ក្រោយ ហើយចុច <strong>បង់ប្រាក់ជាមួយ ABA Pay</strong> ម្ដងទៀតដើម្បីបង្កើតកូដថ្មី។"
+
+
+
 
 }

@@ -1,14 +1,20 @@
 // src/components/ProgressSteps.jsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useProgressSteps, StepPill, Connector } from "../utils/progessbar.jsx";
 
 export default function ProgressSteps(props) {
+    const { t } = useTranslation("progress");
     const { activeId, steps, items } = useProgressSteps(props);
 
     return (
-        <nav aria-label="Progress">
+        <nav aria-label={t("aria_label", { defaultValue: "Progress" })}>
             <p className="mb-2 text-xs text-slate-600 sm:hidden">
-                Step {activeId} of {steps.length}
+                {t("mobile_label", {
+                    step: activeId,
+                    total: steps.length,
+                    defaultValue: "Step {{step}} of {{total}}",
+                })}
             </p>
 
             <ol
@@ -28,6 +34,12 @@ export default function ProgressSteps(props) {
                             status={status}
                             isUnlocked={isUnlocked}
                             onBlockedAttempt={props.onBlockedAttempt}
+                            // Optional: pass localized aria-labels to StepPill if it supports them
+                            ariaLabel={t("step_aria", {
+                                index: i + 1,
+                                total: items.length,
+                                defaultValue: "Step {{index}} of {{total}}",
+                            })}
                         />
                         {i < items.length - 1 && <Connector done={connectorDone} />}
                     </li>

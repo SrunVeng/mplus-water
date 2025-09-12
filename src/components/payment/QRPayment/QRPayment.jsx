@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 // time + dom utils
 import { useCountdown, timeParts } from "../../../utils/time";
@@ -16,17 +17,20 @@ import ABAPayLogo from "../../../assets/ABAPay.svg";
 export default function QRPayment({
                                       payload,
                                       merchantName,
-                                      title = "ABA PAY",
+                                      // If caller passes title/note, we use them; otherwise fallback to i18n
+                                      title,
                                       minutesToExpire = 5,
                                       onExpired,
-                                      note = "Scan with ABA Mobile or any KHQR-supported banking app",
+                                      note,
                                   }) {
+    const { t } = useTranslation("payment_qr");
+
     const qrString = payload?.qrString || "";
     const amount = payload?.amount;
     const currency = payload?.currency || "USD";
     const safeMerchant = merchantName || payload?.merchantName || "";
 
-    // Container-measured sizing (works reliably on all mobile widths)
+    // Container-measured sizing
     const [qrWrapRef, wrapWidth] = useMeasure();
     const qrPixels = useMemo(() => computeQrPixelsFromWidth(wrapWidth), [wrapWidth]);
 
@@ -50,13 +54,17 @@ export default function QRPayment({
 
     const hasQr = typeof qrString === "string" && qrString.length > 0;
 
+    // i18n fallbacks if props missing
+    const resolvedTitle = title ?? t("title");
+    const resolvedNote = note ?? t("note");
+
     return (
         <div className="w-full min-h-[60vh] flex items-start justify-center px-3 sm:px-0">
             <div className="relative w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden bg-gradient-to-b from-[#e8f2ff] to-[#f6f9ff]">
                 {/* Brand */}
                 <div className="px-6 pt-6">
                     <div className="flex items-center justify-center">
-                        <img src={ABAPayLogo} alt={title} className="h-8 w-auto" />
+                        <img src={ABAPayLogo} alt={resolvedTitle} className="h-8 w-auto" />
                     </div>
                     <div className="h-10" />
                 </div>
@@ -93,7 +101,6 @@ export default function QRPayment({
                                     className={[
                                         "relative leading-none",
                                         isExpired ? "grayscale-[.9] brightness-95" : "",
-                                        // fluid square wrapper; width driven by layout, not viewport
                                         "w-full max-w-xs sm:max-w-sm md:max-w-md",
                                         "aspect-square",
                                     ].join(" ")}
@@ -107,9 +114,12 @@ export default function QRPayment({
                                 >
                                     {hasQr ? (
                                         <QRCodeSVG
-                                            aria-label={`Payment QR code for ${safeMerchant || "merchant"}, ${
-                                                typeof displayAmount === "number" ? displayAmount : ""
-                                            } ${currency}`}
+                                            aria-label={t("qr_aria_label", {
+                                                merchant: safeMerchant || t("merchant_fallback"),
+                                                amount:
+                                                    typeof displayAmount === "number" ? displayAmount : "",
+                                                currency,
+                                            })}
                                             value={qrString}
                                             size={qrPixels || 144}
                                             level="H"
@@ -129,7 +139,7 @@ export default function QRPayment({
                                         />
                                     ) : (
                                         <div className="absolute inset-0 grid place-items-center rounded bg-slate-100 text-slate-500 text-xs">
-                                            QR unavailable
+                                            {t("qr_unavailable")}
                                         </div>
                                     )}
 
@@ -146,7 +156,7 @@ export default function QRPayment({
                                                 size={centerBadgeSize}
                                                 currency={currency}
                                                 withBorder
-                                                aria-label={`${currency} currency badge`}
+                                                aria-label={t("currency_badge_aria", { currency })}
                                             />
                                         </div>
                                     </div>
@@ -160,9 +170,8 @@ export default function QRPayment({
                                                 animate={{ opacity: 1 }}
                                                 exit={{ opacity: 0 }}
                                             >
-
                         <span className="px-2.5 py-1 rounded-md bg-slate-900 text-white text-xs font-bold shadow">
-                          Expired
+                          {t("expired")}
                         </span>
                                             </motion.div>
                                         )}
@@ -173,7 +182,7 @@ export default function QRPayment({
                             {/* Instruction */}
                             <div className="px-5 pb-3">
                                 <div className="rounded-xl bg-slate-50 text-slate-500 text-xs text-center px-3 py-2">
-                                    {note}
+                                    {resolvedNote}
                                 </div>
                             </div>
                         </div>
@@ -187,8 +196,8 @@ export default function QRPayment({
           </span>
                     <div aria-live="polite" className="sr-only">
                         {isExpired
-                            ? "QR code expired."
-                            : `QR code expires in ${mm} minutes ${ss} seconds.`}
+                            ? t("aria_expired")
+                            : t("aria_expires_in", { mm, ss })}
                     </div>
                 </div>
             </div>

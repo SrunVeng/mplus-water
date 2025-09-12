@@ -1,5 +1,5 @@
 import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
+import {initReactI18next, useTranslation} from "react-i18next";
 import en from "../locales/en.json";
 import km from "../locales/km.json";
 
@@ -26,3 +26,4 @@ i18n.on("languageChanged", (lng) => {
 });
 
 export default i18n;
+

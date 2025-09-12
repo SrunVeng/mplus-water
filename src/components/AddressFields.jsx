@@ -1,33 +1,59 @@
 // src/components/AddressFields.jsx
 import React, { useEffect, useId, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Listbox, Transition } from "@headlessui/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronsUpDown, Check, ChevronDown } from "lucide-react";
 import { ADDRESSES } from "../data/address"; // Province -> District -> Commune -> [Villages]
 
-// ---------- Reusable Select with search ----------
+// Code datasets (have name_en + name_km + codes)
+import provincesData from "../../scripts/files/provinces.json";
+import districtsData from "../../scripts/files/districts.json";
+import communesData from "../../scripts/files/communes.json";
+import villagesData from "../../scripts/files/villages.json";
+
+// ---------- Reusable Select with search + i18n labels ----------
 function AnimatedSelect({
                             id,
                             label,
                             required,
-                            value,
+                            value,          // raw value (we keep EN name)
                             onChange,
-                            options,
+                            options,        // array of EN names from ADDRESSES
                             placeholder,
                             disabled = false,
+                            renderLabel,    // (rawValue) => localized label
+                            t,
+                            locale,         // i18n.language
                         }) {
     const [query, setQuery] = useState("");
 
-    const filtered = useMemo(() => {
-        if (!query) return options;
-        const q = query.toLowerCase();
-        return options.filter((o) => String(o).toLowerCase().includes(q));
-    }, [options, query]);
+    // Build localized view options (value stays EN, label switches by lang)
+    const viewOptions = useMemo(() => {
+        const mapped = (options || []).map((v) => ({
+            value: v,
+            label: renderLabel ? renderLabel(v) : String(v),
+        }));
+        // Always sort by the visible label so EN/KM order feels natural
+        mapped.sort((a, b) => a.label.localeCompare(b.label, locale || "en"));
+        return mapped;
+    }, [options, renderLabel, locale]);
 
+    const filtered = useMemo(() => {
+        if (!query) return viewOptions;
+        const q = query.toLowerCase();
+        return viewOptions.filter((o) => o.label.toLowerCase().includes(q));
+    }, [viewOptions, query]);
+
+    const currentLabel = useMemo(() => {
+        const found = viewOptions.find((o) => o.value === value);
+        return found ? found.label : value;
+    }, [viewOptions, value]);
+
+    // Auto-clear if current value no longer exists after parent change
     useEffect(() => {
-        // If current value disappears from options (parent changed), clear it.
-        if (value && !options.includes(value)) onChange("");
-    }, [options, value, onChange]);
+        if (value && !viewOptions.some((o) => o.value === value)) onChange("");
+    }, [viewOptions, value, onChange]);
 
     return (
         <div className="space-y-1.5">
@@ -51,7 +77,7 @@ function AnimatedSelect({
                             }
                         >
               <span className={"block truncate " + (!value ? "text-slate-400" : "text-slate-900")}>
-                {value || placeholder}
+                {value ? currentLabel : placeholder}
               </span>
                             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                 <ChevronDown className={`h-5 w-5 transition-transform ${open ? "rotate-180" : "rotate-0"}`} />
@@ -84,7 +110,7 @@ function AnimatedSelect({
                                                     <input
                                                         value={query}
                                                         onChange={(e) => setQuery(e.target.value)}
-                                                        placeholder="Type to filter..."
+                                                        placeholder={t("address.search_placeholder")}
                                                         className="h-9 w-full bg-transparent text-sm outline-none placeholder:text-slate-400"
                                                     />
                                                 </div>
@@ -92,12 +118,12 @@ function AnimatedSelect({
 
                                             <ul className="max-h-60 overflow-auto py-1">
                                                 {!filtered.length ? (
-                                                    <li className="px-3 py-2 text-sm text-slate-500">No results</li>
+                                                    <li className="px-3 py-2 text-sm text-slate-500">{t("address.no_results")}</li>
                                                 ) : (
                                                     filtered.map((opt) => (
                                                         <Listbox.Option
-                                                            key={opt}
-                                                            value={opt}
+                                                            key={opt.value}
+                                                            value={opt.value}
                                                             className={({ active }) =>
                                                                 `group relative cursor-default select-none px-3 py-2 text-sm flex items-center justify-between ${
                                                                     active ? "bg-brand-50 text-brand-700" : "text-slate-700"
@@ -106,7 +132,9 @@ function AnimatedSelect({
                                                         >
                                                             {({ selected }) => (
                                                                 <>
-                                                                    <span className={`truncate ${selected ? "font-semibold" : "font-normal"}`}>{opt}</span>
+                                  <span className={`truncate ${selected ? "font-semibold" : "font-normal"}`}>
+                                    {opt.label}
+                                  </span>
                                                                     {selected ? <Check className="h-4 w-4 opacity-90" /> : null}
                                                                 </>
                                                             )}
@@ -149,6 +177,9 @@ function TextField({ id, label, required, value, onChange, placeholder }) {
 
 // ---------- Main component ----------
 export default function AddressFields({ form, onChange }) {
+    const { t, i18n } = useTranslation();
+    const langKey = i18n.language?.startsWith("km") ? "name_km" : "name_en";
+
     const uid = useId();
     const ids = {
         province: `province-${uid}`,
@@ -160,29 +191,92 @@ export default function AddressFields({ form, onChange }) {
 
     const set = (key) => (val) => onChange(key, val);
 
-    // Province options
-    const provinces = useMemo(() => Object.keys(ADDRESSES).sort((a, b) => a.localeCompare(b, "en")), []);
+    // ---- Build lookups from code datasets (EN/KM available) ----
+    const provByNameEn = useMemo(() => {
+        const m = new Map();
+        for (const p of provincesData.provinces || []) m.set(p.name_en, p);
+        return m;
+    }, []);
 
-    // District options depend on province
+    const distByProvCodeAndNameEn = useMemo(() => {
+        const m = new Map(); // `${provCode}::${district.name_en}` -> district
+        for (const d of districtsData.districts || []) {
+            m.set(`${d.province_code}::${d.name_en}`, d);
+        }
+        return m;
+    }, []);
+
+    const commByDistCodeAndNameEn = useMemo(() => {
+        const m = new Map(); // `${distCode}::${commune.name_en}` -> commune
+        for (const c of communesData.communes || []) {
+            m.set(`${c.district_code}::${c.name_en}`, c);
+        }
+        return m;
+    }, []);
+
+    const villsByCommCode = useMemo(() => {
+        const m = new Map(); // comm.code -> [villages]
+        for (const v of villagesData.villages || []) {
+            const code = v.commune_code || v.communeId || v.commune_id || v.COMMUNE_CODE;
+            if (!code) continue;
+            if (!m.has(code)) m.set(code, []);
+            m.get(code).push(v);
+        }
+        return m;
+    }, []);
+
+    // Province options (values = EN names from ADDRESSES)
+    const provinces = useMemo(
+        () => Object.keys(ADDRESSES || {}),
+        []
+    );
+    const renderProvince = (nameEn) => provByNameEn.get(nameEn)?.[langKey] || nameEn;
+
+    // District options depend on province (values = EN names from ADDRESSES)
     const districts = useMemo(() => {
         if (!form.province) return [];
-        return Object.keys(ADDRESSES[form.province] || {}).sort((a, b) => a.localeCompare(b, "en"));
+        return Object.keys(ADDRESSES[form.province] || {});
     }, [form.province]);
 
-    // Commune options depend on province + district (node is an object keyed by commune)
+    const renderDistrict = (nameEn) => {
+        const provCode = provByNameEn.get(form.province)?.code;
+        if (!provCode) return nameEn;
+        const d = distByProvCodeAndNameEn.get(`${provCode}::${nameEn}`);
+        return d?.[langKey] || nameEn;
+    };
+
+    // Communes depend on province + district
     const communes = useMemo(() => {
         if (!(form.province && form.district)) return [];
         const node = ADDRESSES[form.province]?.[form.district];
         if (!node) return [];
-        return Object.keys(node).sort((a, b) => a.localeCompare(b, "en"));
+        return Object.keys(node);
     }, [form.province, form.district]);
 
-    // Village options depend on province + district + commune (leaf is an array)
+    const renderCommune = (nameEn) => {
+        const provCode = provByNameEn.get(form.province)?.code;
+        const dist = distByProvCodeAndNameEn.get(`${provCode}::${form.district}`);
+        if (!dist) return nameEn;
+        const c = commByDistCodeAndNameEn.get(`${dist.code}::${nameEn}`);
+        return c?.[langKey] || nameEn;
+    };
+
+    // Villages depend on province + district + commune
     const villages = useMemo(() => {
         if (!(form.province && form.district && form.commune)) return [];
         const arr = ADDRESSES[form.province]?.[form.district]?.[form.commune];
-        return Array.isArray(arr) ? [...arr].sort((a, b) => a.localeCompare(b, "en")) : [];
+        return Array.isArray(arr) ? arr : [];
     }, [form.province, form.district, form.commune]);
+
+    const renderVillage = (nameEn) => {
+        const provCode = provByNameEn.get(form.province)?.code;
+        const dist = distByProvCodeAndNameEn.get(`${provCode}::${form.district}`);
+        const comm = dist ? commByDistCodeAndNameEn.get(`${dist.code}::${form.commune}`) : undefined;
+        if (!comm) return nameEn;
+        const list = villsByCommCode.get(comm.code) || [];
+        const v = list.find((x) => x.name_en === nameEn);
+        return v?.[langKey] || nameEn;
+    };
 
     // Reset dependents when parent changes
     const setProvince = (p) => {
@@ -201,58 +295,78 @@ export default function AddressFields({ form, onChange }) {
         set("village")("");
     };
 
+    // Force remount on language change so placeholders/search reset instantly
+    const lang = i18n.language || "en";
+
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <AnimatedSelect
+                key={`prov-${lang}`}
                 id={ids.province}
-                label="Province / City"
+                label={t("address.province")}
                 required
                 value={form.province}
                 onChange={setProvince}
                 options={provinces}
-                placeholder="Select Province/City"
+                placeholder={t("address.select_province")}
+                disabled={false}
+                renderLabel={renderProvince}
+                t={t}
+                locale={lang}
             />
 
             <AnimatedSelect
+                key={`dist-${lang}`}
                 id={ids.district}
-                label="District / Khan / City"
+                label={t("address.district")}
                 required
                 value={form.district}
                 onChange={setDistrict}
                 options={districts}
-                placeholder="Select District"
+                placeholder={t("address.select_district")}
                 disabled={!form.province}
+                renderLabel={renderDistrict}
+                t={t}
+                locale={lang}
             />
 
             <AnimatedSelect
+                key={`comm-${lang}`}
                 id={ids.commune}
-                label="Commune / Sangkat"
+                label={t("address.commune")}
                 required
                 value={form.commune}
                 onChange={setCommune}
                 options={communes}
-                placeholder="Select Commune"
+                placeholder={t("address.select_commune")}
                 disabled={!form.district}
+                renderLabel={renderCommune}
+                t={t}
+                locale={lang}
             />
 
             <AnimatedSelect
+                key={`vill-${lang}`}
                 id={ids.village}
-                label="Village"
+                label={t("address.village")}
                 required
                 value={form.village}
                 onChange={set("village")}
                 options={villages}
-                placeholder="Select Village"
+                placeholder={t("address.select_village")}
                 disabled={!form.commune}
+                renderLabel={renderVillage}
+                t={t}
+                locale={lang}
             />
 
-            {/* Keep Street as free text (optional) */}
+            {/* Street as free text */}
             <TextField
                 id={ids.street}
-                label="Street"
+                label={t("address.street")}
                 value={form.street}
                 onChange={set("street")}
-                placeholder="Street name / number"
+                placeholder={t("address.street_placeholder")}
             />
         </div>
     );
