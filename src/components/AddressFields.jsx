@@ -1,22 +1,33 @@
-import React, { useId, useMemo, useState } from "react";
+// src/components/AddressFields.jsx
+import React, { useEffect, useId, useMemo, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronsUpDown, Check, ChevronDown } from "lucide-react";
-import { PROVINCES, DISTRICTS, COMMUNES } from "../data/address.js";
+import { ADDRESSES } from "../data/address"; // Province -> District -> Commune -> [Villages]
 
-/**
- * A sleek, animated select built with Headless UI + Framer Motion.
- * - Full keyboard + screen-reader support
- * - Smooth open/close (spring) with subtle shadow grow
- * - Optional search (type-to-filter)
- */
-function AnimatedSelect({ id, label, required, value, onChange, options, placeholder }) {
+// ---------- Reusable Select with search ----------
+function AnimatedSelect({
+                            id,
+                            label,
+                            required,
+                            value,
+                            onChange,
+                            options,
+                            placeholder,
+                            disabled = false,
+                        }) {
     const [query, setQuery] = useState("");
 
     const filtered = useMemo(() => {
         if (!query) return options;
-        return options.filter((o) => o.toLowerCase().includes(query.toLowerCase()));
+        const q = query.toLowerCase();
+        return options.filter((o) => String(o).toLowerCase().includes(q));
     }, [options, query]);
+
+    useEffect(() => {
+        // If current value disappears from options (parent changed), clear it.
+        if (value && !options.includes(value)) onChange("");
+    }, [options, value, onChange]);
 
     return (
         <div className="space-y-1.5">
@@ -27,18 +38,19 @@ function AnimatedSelect({ id, label, required, value, onChange, options, placeho
                 </label>
             </div>
 
-            <Listbox value={value} onChange={onChange}>
-                {({ open }) => (
+            <Listbox value={value} onChange={onChange} disabled={disabled}>
+                {({ open, disabled: isDisabled }) => (
                     <div className="relative">
                         <Listbox.Button
                             id={id}
                             className={
-                                "w-full h-12 rounded-2xl border text-sm bg-white pr-11 pl-4 text-left " +
-                                "border-slate-300 hover:border-slate-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60 " +
-                                "transition-colors"
+                                "w-full h-12 rounded-2xl border text-sm bg-white pr-11 pl-4 text-left transition-colors " +
+                                (isDisabled
+                                    ? "border-slate-200 text-slate-400 cursor-not-allowed bg-slate-50"
+                                    : "border-slate-300 hover:border-slate-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60")
                             }
                         >
-              <span className={"block truncate " + (!value ? "text-slate-400" : "text-slate-900") }>
+              <span className={"block truncate " + (!value ? "text-slate-400" : "text-slate-900")}>
                 {value || placeholder}
               </span>
                             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -47,7 +59,7 @@ function AnimatedSelect({ id, label, required, value, onChange, options, placeho
                         </Listbox.Button>
 
                         <AnimatePresence>
-                            {open && (
+                            {open && !isDisabled && (
                                 <Transition
                                     as={React.Fragment}
                                     enter="transition ease-out duration-150"
@@ -87,16 +99,15 @@ function AnimatedSelect({ id, label, required, value, onChange, options, placeho
                                                             key={opt}
                                                             value={opt}
                                                             className={({ active }) =>
-                                                                `group relative cursor-default select-none px-3 py-2 text-sm flex items-center justify-between ` +
-                                                                (active ? "bg-brand-50 text-brand-700" : "text-slate-700")
+                                                                `group relative cursor-default select-none px-3 py-2 text-sm flex items-center justify-between ${
+                                                                    active ? "bg-brand-50 text-brand-700" : "text-slate-700"
+                                                                }`
                                                             }
                                                         >
                                                             {({ selected }) => (
                                                                 <>
                                                                     <span className={`truncate ${selected ? "font-semibold" : "font-normal"}`}>{opt}</span>
-                                                                    {selected ? (
-                                                                        <Check className="h-4 w-4 opacity-90" />
-                                                                    ) : null}
+                                                                    {selected ? <Check className="h-4 w-4 opacity-90" /> : null}
                                                                 </>
                                                             )}
                                                         </Listbox.Option>
@@ -115,6 +126,7 @@ function AnimatedSelect({ id, label, required, value, onChange, options, placeho
     );
 }
 
+// ---------- Simple text input ----------
 function TextField({ id, label, required, value, onChange, placeholder }) {
     return (
         <div className="space-y-1.5">
@@ -135,19 +147,59 @@ function TextField({ id, label, required, value, onChange, placeholder }) {
     );
 }
 
+// ---------- Main component ----------
 export default function AddressFields({ form, onChange }) {
-    // stable ids for a11y + label focusing
     const uid = useId();
     const ids = {
         province: `province-${uid}`,
         district: `district-${uid}`,
         commune: `commune-${uid}`,
-        street: `street-${uid}`,
         village: `village-${uid}`,
+        street: `street-${uid}`,
     };
 
-    // helper to keep parent API the same
     const set = (key) => (val) => onChange(key, val);
+
+    // Province options
+    const provinces = useMemo(() => Object.keys(ADDRESSES).sort((a, b) => a.localeCompare(b, "en")), []);
+
+    // District options depend on province
+    const districts = useMemo(() => {
+        if (!form.province) return [];
+        return Object.keys(ADDRESSES[form.province] || {}).sort((a, b) => a.localeCompare(b, "en"));
+    }, [form.province]);
+
+    // Commune options depend on province + district (node is an object keyed by commune)
+    const communes = useMemo(() => {
+        if (!(form.province && form.district)) return [];
+        const node = ADDRESSES[form.province]?.[form.district];
+        if (!node) return [];
+        return Object.keys(node).sort((a, b) => a.localeCompare(b, "en"));
+    }, [form.province, form.district]);
+
+    // Village options depend on province + district + commune (leaf is an array)
+    const villages = useMemo(() => {
+        if (!(form.province && form.district && form.commune)) return [];
+        const arr = ADDRESSES[form.province]?.[form.district]?.[form.commune];
+        return Array.isArray(arr) ? [...arr].sort((a, b) => a.localeCompare(b, "en")) : [];
+    }, [form.province, form.district, form.commune]);
+
+    // Reset dependents when parent changes
+    const setProvince = (p) => {
+        set("province")(p);
+        set("district")("");
+        set("commune")("");
+        set("village")("");
+    };
+    const setDistrict = (d) => {
+        set("district")(d);
+        set("commune")("");
+        set("village")("");
+    };
+    const setCommune = (c) => {
+        set("commune")(c);
+        set("village")("");
+    };
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -156,31 +208,45 @@ export default function AddressFields({ form, onChange }) {
                 label="Province / City"
                 required
                 value={form.province}
-                onChange={set("province")}
-                options={PROVINCES}
+                onChange={setProvince}
+                options={provinces}
                 placeholder="Select Province/City"
             />
 
             <AnimatedSelect
                 id={ids.district}
-                label="District"
+                label="District / Khan / City"
                 required
                 value={form.district}
-                onChange={set("district")}
-                options={DISTRICTS}
+                onChange={setDistrict}
+                options={districts}
                 placeholder="Select District"
+                disabled={!form.province}
             />
 
             <AnimatedSelect
                 id={ids.commune}
-                label="Commune"
+                label="Commune / Sangkat"
                 required
                 value={form.commune}
-                onChange={set("commune")}
-                options={COMMUNES}
+                onChange={setCommune}
+                options={communes}
                 placeholder="Select Commune"
+                disabled={!form.district}
             />
 
+            <AnimatedSelect
+                id={ids.village}
+                label="Village"
+                required
+                value={form.village}
+                onChange={set("village")}
+                options={villages}
+                placeholder="Select Village"
+                disabled={!form.commune}
+            />
+
+            {/* Keep Street as free text (optional) */}
             <TextField
                 id={ids.street}
                 label="Street"
@@ -188,19 +254,6 @@ export default function AddressFields({ form, onChange }) {
                 onChange={set("street")}
                 placeholder="Street name / number"
             />
-
-            <TextField
-                id={ids.village}
-                label="Village"
-                value={form.village}
-                onChange={set("village")}
-                placeholder="Village"
-            />
         </div>
     );
 }
-
-// Tailwind color note:
-// Use a custom --brand color in your Tailwind theme for the subtle accents above
-// e.g.
-// theme: { extend: { colors: { brand: { 50: '#eef2ff', 500: '#6366f1', 600: '#5458e7', 700: '#4f46e5' } } } }
