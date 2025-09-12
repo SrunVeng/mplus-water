@@ -79,7 +79,7 @@ export default function QRPaymentPage() {
 
                         <div className="mt-4">
                             <FeatureUnavailable
-                                telegramUrl="https://t.me/your_username"
+                                telegramUrl="https://t.me/srunveng"
                                 backTo="/order/payment"
                             />
                         </div>
@@ -135,7 +135,7 @@ export default function QRPaymentPage() {
                     <div className="mt-4">
                         <section className="lg:col-span-2 mb-4">
                             <FeatureUnavailable
-                                telegramUrl="https://t.me/your_username"
+                                telegramUrl="https://t.me/srunveng"
                                 backTo="/order/payment"
                             />
                         </section>
