@@ -1,5 +1,5 @@
 // src/pages/QRPaymentPage.jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation, Trans } from "react-i18next";
 
@@ -10,26 +10,48 @@ import ConfirmLeaveLink from "../components/ConfirmLeaveLink";
 import QRPayment from "../components/payment/QRPayment/QRPayment.jsx";
 
 export default function QRPaymentPage() {
-    const { t } = useTranslation(["qr_page", "order", "payment_qr"]);
+    const { t, i18n } = useTranslation();
     const nav = useNavigate();
     const location = useLocation();
     const { enriched, amount, deliveryFee, grandTotal } = useOrder();
 
     // Prefer router state; fallback to context if user refreshed.
     const routerState = location.state || {};
-    const initialOrder =
-        routerState.order || { items: enriched, amount, deliveryFee, grandTotal };
+    const initialOrder = useMemo(() => {
+        const fromState = routerState.order || {};
+        return {
+            items: fromState.items ?? enriched ?? [],
+            amount: fromState.amount ?? amount ?? 0,
+            deliveryFee: fromState.deliveryFee ?? deliveryFee ?? 0,
+            grandTotal: fromState.grandTotal ?? grandTotal ?? 0,
+        };
+    }, [routerState.order, enriched, amount, deliveryFee, grandTotal]);
+
     const initialQR = routerState.qrPayload || null;
 
-    const [qrPayload, setQrPayload] = useState(initialQR);
+    const [qrPayload] = useState(initialQR);
     const [qrExpired, setQrExpired] = useState(false);
 
-    // If direct visit without payload, go back to selection.
+    // Redirect if landing here directly without a payload.
     useEffect(() => {
         if (!qrPayload) nav("/order/payment", { replace: true });
     }, [qrPayload, nav]);
 
+    // Reset the "expired" banner if we ever get a fresh payload.
+    useEffect(() => {
+        setQrExpired(false);
+    }, [qrPayload?.qrString]);
+
+    // Guard render during redirect.
     if (!qrPayload) return null;
+
+    const merchantName =
+        qrPayload.merchantName ??
+        t("payment_qr.merchant_fallback", { defaultValue: "merchant" });
+
+    const minutesToExpire = Number.isFinite(Number(qrPayload.expiresInMinutes))
+        ? Number(qrPayload.expiresInMinutes)
+        : 5;
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -76,23 +98,27 @@ export default function QRPaymentPage() {
                         <QRPayment
                             key={qrPayload?.qrString ?? "qr"}
                             payload={qrPayload}
-                            merchantName={qrPayload.merchantName}
-                            // Use localized fallback title/note (QRPayment also has its own defaults)
-                            title={t("payment_qr:title", { defaultValue: "ABA PAY" })}
-                            minutesToExpire={5}
-                            onExpired={() => setQrExpired(true)}
-                            note={t("payment_qr:note", {
+                            merchantName={merchantName}
+                            // Localized title/note (QRPayment also has internal defaults)
+                            title={t("payment_qr.title", { defaultValue: "ABA PAY" })}
+                            note={t("payment_qr.note", {
                                 defaultValue:
                                     "Scan with ABA Mobile or any KHQR-supported banking app",
                             })}
+                            minutesToExpire={minutesToExpire}
+                            onExpired={() => setQrExpired(true)}
+                            locale={i18n.language || "en"}
                         />
 
                         {qrExpired && (
-                            <div className="mt-4 text-sm text-rose-700 bg-rose-50 border border-rose-200 px-3 py-2 rounded-xl">
+                            <div
+                                className="mt-4 text-sm text-rose-700 bg-rose-50 border border-rose-200 px-3 py-2 rounded-xl"
+                                role="status"
+                                aria-live="polite"
+                            >
                                 <Trans
                                     i18nKey="qr_page.expired_banner"
                                     defaults='The KHQR has expired. Go back and click <strong>Pay with ABA Pay</strong> again to generate a fresh code.'
-                                    t={t}
                                     components={{ strong: <strong /> }}
                                 />
                             </div>

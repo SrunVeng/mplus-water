@@ -6,11 +6,11 @@
 
   "cta.see_products": "មើលផលិតផល",
   "cta.contact_us": "ទាក់ទងមកកាន់យើង",
-  "cta.order": "ការបញ្ជាទិញ",
+  "cta.order": "បញ្ជាទិញ",
 
   "hero.headline_prefix": "ការផ្តល់ទឹកឲ្យរាងកាយកាន់តែល្អជាមួយ",
   "hero.headline_brand": "អឹម ផ្លាស់",
-  "hero.sub": "ទឹកសុទ្ធរបស់យើងគាំទ្រសហគមន៍ក្នុងស្រុក គាំទ្រផលិតកម្ពុជា",
+  "hero.sub": "ទឹកសុទ្ធរបស់យើងគាំទ្រសហគមន៍ក្នុងស្រុក គាំទ្រផលិតកម្ពុជា។",
 
   "stats.purity": "គុណភាព",
   "stats.purity_value": "99.9%",
@@ -19,14 +19,14 @@
   "stats.delivery": "ដឹកជញ្ជូន",
   "stats.delivery_value": "រហ័ស",
 
-  "product_details.title": "ផលិតផលពួកយើង",
-  "product_details.sub": "លក្ខណៈពិសេស អត្ថប្រយោជន៍ និងជម្រើសដឹកជញ្ជូន។",
+  "product_details.title": "ព័ត៌មានផលិតផល",
+  "product_details.sub": "ស្វែងយល់អំពីលក្ខណៈពិសេស អត្ថប្រយោជន៍ និងជម្រើសដឹកជញ្ជូន។",
   "product.water_quality": "គុណភាពទឹក",
-  "product.water_quality_desc": "pH 7.2–7.6 · UV + RO + ការចម្រោះដោយមីក្រូណ៍។",
+  "product.water_quality_desc": "pH 7.2–7.6 · UV + RO + ការចម្រោះដោយមីក្រូន។",
   "product.delivery": "ដឹកជញ្ជូន",
   "product.delivery_desc": "ដឹកជញ្ជូនក្នុងថ្ងៃសម្រាប់ទីក្រុង · ដឹកជញ្ជូនថ្ងៃបន្ទាប់សម្រាប់ខេត្ត · ដឹកជញ្ជូនឥតគិតថ្លៃសម្រាប់ការបញ្ជាទិញច្រើន។",
 
-  "footer.tagline": "ការផ្តល់ទឹកគុណភាពខ្ពស់សម្រាប់គ្រប់គ្នា។",
+  "footer.tagline": "ទឹកពីកម្ពុជា សម្រាប់កម្ពុជា។",
   "footer.copyright": "រក្សាសិទ្ធិគ្រប់យ៉ាង។",
 
   "lang.switch_to_en": "English",
@@ -37,9 +37,9 @@
   "contact.stay_connected": "ទំនាក់ទំនងតាម",
   "contact.phone": "ទូរស័ព្ទ",
   "contact.address": "អាសយដ្ឋាន",
-  "contact.address_value": "សង្កាត់ទួលសង្កែ, រាជធានីភ្នំពេញ",
+  "contact.address_value": "សង្កាត់ទួលសង្កែ រាជធានីភ្នំពេញ",
   "contact.telegram_qr": "QR Telegram",
-  "contact.telegram_qr_sub": "ស្កេន QR ខាងក្រោមសម្រាប់ព័ត៌មានបន្ថែម",
+  "contact.telegram_qr_sub": "ស្កេន QR ខាងក្រោមដើម្បីភ្ជាប់មកកាន់ Telegram របស់យើង។",
 
   "a11y.prev": "ថយក្រោយ",
   "a11y.next": "ទៅមុខ",
@@ -48,18 +48,18 @@
   "products": {
     "1": {
       "name": "អឹម ផ្លាស់ 1.5L",
-      "desc": "ទំហំគ្រួសារ សាកសមសម្រាប់ពេលជួបជុំ",
-      "details": ["ដបគ្មាន BPA", "pH សមតុល្យ", "១កេស មាន 6"]
+      "desc": "ទំហំគ្រួសារ សាកសមសម្រាប់ពេលជួបជុំ។",
+      "details": ["ដបគ្មាន BPA", "pH សមតុល្យ", "១កេស មាន 6 ដប"]
     },
     "3": {
       "name": "អឹម ផ្លាស់ 350ml",
-      "desc": "ទំហំតូច សាកសមសម្រាប់កម្មវិធី",
-      "details": ["ដបគ្មាន BPA", "pH សមតុល្យ", "១កេស មាន 12"]
+      "desc": "ទំហំតូច សាកសមសម្រាប់ព្រឹត្តិការណ៍។",
+      "details": ["ដបគ្មាន BPA", "pH សមតុល្យ", "១កេស មាន 12 ដប"]
     },
     "4": {
       "name": "អឹម ផ្លាស់ 500ml",
-      "desc": "ទំហំមធ្យម សាកសមសម្រាប់កីឡា",
-      "details": ["ដបគ្មាន BPA", "pH សមតុល្យ", "១កេស មាន12"]
+      "desc": "ទំហំមធ្យម សាកសមសម្រាប់កីឡា។",
+      "details": ["ដបគ្មាន BPA", "pH សមតុល្យ", "១កេស មាន 12 ដប"]
     }
   },
 
@@ -72,12 +72,12 @@
   "order.email_optional": "អ៊ីមែល (ជាជម្រើស)",
   "order.delivery_address_title": "អាសយដ្ឋានដឹកជញ្ជូន",
   "order.delivery_address_subtitle": "យើងគួរដឹកជញ្ជូនទៅណា?",
-  "order.locating": "កំពុងកំណត់ទីតាំង...",
+  "order.locating": "កំពុងកំណត់ទីតាំង…",
   "order.update_location": "ធ្វើបច្ចុប្បន្នភាពទីតាំងរបស់ខ្ញុំ",
   "order.use_my_location": "ប្រើទីតាំងបច្ចុប្បន្នរបស់ខ្ញុំ",
   "order.location_set": "បានកំណត់ទីតាំង",
-  "order.permission_denied": "បានបដិសេធសិទ្ធិ",
-  "order.location_hint": "មិនចាំបាច់ ប៉ុន្តែជួយឲ្យអ្នកដឹកជញ្ជូនរកអ្នកបានលឿនជាងមុន",
+  "order.permission_denied": "បដិសេធសិទ្ធិ",
+  "order.location_hint": "មិនចាំបាច់ ប៉ុន្តែជួយឲ្យអ្នកដឹកជញ្ជូនរកអ្នកបានលឿនជាងមុន។",
   "order.continue_to_products": "បន្តទៅផលិតផល",
   "order.tips_title": "គន្លឹះ",
 
@@ -86,7 +86,8 @@
   "address.commune": "ឃុំ / សង្កាត់",
   "address.village": "ភូមិ",
   "address.street": "ផ្លូវ",
-  "order.tip_delivery_fee": "ថ្លៃដឹកជញ្ជូន៖ 2$ ក្នុងភ្នំពេញ · 5$ ខាងក្រៅ · ឥតគិតថ្លៃសម្រាប់ការបញ្ជាទិញលើសពី 100$",
+
+  "order.tip_delivery_fee": "ថ្លៃដឹកជញ្ជូន៖ $2 ក្នុងភ្នំពេញ · $5 ខាងក្រៅ · ឥតគិតថ្លៃសម្រាប់ការបញ្ជាទិញលើស $100",
   "order.tip_location_help": "ការចែករំលែកទីតាំងជួយឲ្យអ្នកដឹកជញ្ជូនរកអ្នកបានលឿនជាងមុន។",
 
   "address.search_placeholder": "វាយដើម្បីស្វែងរក...",
@@ -95,8 +96,7 @@
   "address.select_district": "ជ្រើសស្រុក / ខណ្ឌ / ក្រុង",
   "address.select_commune": "ជ្រើសឃុំ / សង្កាត់",
   "address.select_village": "ជ្រើសភូមិ",
-  "address.street_placeholder": "ផ្លូវ ឬ លេខផ្លូវ",
-
+  "address.street_placeholder": "ឈ្មោះផ្លូវ / លេខផ្លូវ",
 
   "order.products_title": "ផលិតផល",
   "order.products_subtitle": "ជ្រើសរើសទំនិញ និងបរិមាណ។",
@@ -122,7 +122,7 @@
 
   "order.summary_title": "សង្ខេបការបញ្ជាទិញ",
   "order.summary_subtotal": "សរុបរង",
-  "order.summary_shipping": "ដឹកជញ្ជូន",
+  "order.summary_shipping": "ថ្លៃដឹកជញ្ជូន",
   "order.summary_total": "សរុប",
   "unknown_product": "ផលិតផលមិនស្គាល់",
 
@@ -151,31 +151,34 @@
   "order.contact_confirm_stay": "នៅបន្ត",
   "order.contact_support": "ទាក់ទងផ្នែកជំនួយ",
 
-  "title": "ABA PAY",
-  "note": "ស្កេនដោយ ABA Mobile ឬ​ គណនីធនាគារណាមួយដែលគាំទ្រ KHQR",
-  "qr_unavailable": "មិនមាន QR",
-  "expired": "ផុតកំណត់",
-  "merchant_fallback": "ហាង",
-  "qr_aria_label": "QR សម្រាប់បង់ប្រាក់ទៅកាន់ {{merchant}} ចំនួន {{amount}} {{currency}}",
-  "currency_badge_aria": "និមិត្តសញ្ញារាជប្រាក់ {{currency}}",
-  "aria_expired": "QR បានផុតកំណត់។",
-  "aria_expires_in": "QR នឹងផុតកំណត់ក្រោយ {{mm}} នាទី {{ss}} វិនាទី។",
+  "payment_qr.title": "ABA PAY",
+  "payment_qr.note": "ស្កេនដោយ ABA Mobile ឬកម្មវិធីធនាគារដែលគាំទ្រ KHQR",
+  "payment_qr.qr_unavailable": "មិនមាន QR",
+  "payment_qr.expired": "ផុតកំណត់",
+  "payment_qr.merchant_fallback": "ហាង",
+  "payment_qr.qr_aria_label": "QR សម្រាប់បង់ប្រាក់ទៅកាន់ {{merchant}} ចំនួន {{amount}} {{currency}}",
+  "payment_qr.currency_badge_aria": "និមិត្តសញ្ញាប្រាក់ {{currency}}",
+  "payment_qr.aria_expired": "QR បានផុតកំណត់។",
+  "payment_qr.aria_expires_in": "QR នឹងផុតកំណត់ក្រោយ {{mm}} នាទី {{ss}} វិនាទី។",
 
   "order.ship_to": "ដឹកជញ្ជូនទៅ",
 
-  "aria_label": "វឌ្ឍនភាព",
-  "mobile_label": "ជំហានទី {{step}} នៃ {{total}}",
-  "step_aria": "ជំហានទី {{index}} នៃ {{total}}",
+  "progress.aria_label": "វឌ្ឍនភាព",
+  "progress.mobile_label": "ជំហានទី {{step}} នៃ {{total}}",
+  "progress.step_aria": "ជំហានទី {{index}} នៃ {{total}}",
 
-  "step_heading": "៤ · ការបង់ប្រាក់ · ABA Pay",
-  "cancel_title": "បោះបង់ការបង់ប្រាក់?",
-  "cancel_confirm_text": "ការបង់ប្រាក់ KHQR កំពុងដំណើរការ។ តើអ្នកពិតជាចង់បោះបង់ ហើយត្រឡប់ក្រោយឬ?",
-  "cancel_confirm_label": "បោះបង់ការបង់ប្រាក់",
-  "cancel_stay_label": "នៅបន្ត",
-  "cancel_button": "បោះបង់ការបង់ប្រាក់",
-  "expired_banner": "QR បានផុតកំណត់។ សូមត្រឡប់ក្រោយ ហើយចុច <strong>បង់ប្រាក់ជាមួយ ABA Pay</strong> ម្ដងទៀតដើម្បីបង្កើតកូដថ្មី។"
+  "qr_page.step_heading": "៤ · ការបង់ប្រាក់ · ABA Pay",
+  "qr_page.cancel_title": "បោះបង់ការបង់ប្រាក់?",
+  "qr_page.cancel_confirm_text": "ការបង់ប្រាក់ KHQR កំពុងដំណើរការ។ តើអ្នកពិតជាចង់បោះបង់ ហើយត្រឡប់ក្រោយឬ?",
+  "qr_page.cancel_confirm_label": "បោះបង់ការបង់ប្រាក់",
+  "qr_page.cancel_stay_label": "នៅបន្ត",
+  "qr_page.cancel_button": "បោះបង់ការបង់ប្រាក់",
+  "qr_page.expired_banner": "QR បានផុតកំណត់។ សូមត្រឡប់ក្រោយ ហើយចុច <strong>បង់ប្រាក់ជាមួយ ABA Pay</strong> ម្ដងទៀតដើម្បីបង្កើតកូដថ្មី។",
 
-
-
-
+  "steps": {
+    "info": "ពត៌មាន",
+    "products": "ផលិតផល",
+    "review": "ពិនិត្យឡើងវិញ",
+    "payment": "ការបង់ប្រាក់"
+  }
 }

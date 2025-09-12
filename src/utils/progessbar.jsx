@@ -1,12 +1,13 @@
 // src/components/utils.js
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export const STEPS = [
-    { id: 1, label: "Info",     to: "/order/info" },
-    { id: 2, label: "Products", to: "/order/products" },
-    { id: 3, label: "Review",   to: "/order/review" },
-    { id: 4, label: "Payment",  to: "/order/payment" },
+    { id: 1, labelKey: "steps.info",     to: "/order/info" },
+    { id: 2, labelKey: "steps.products", to: "/order/products" },
+    { id: 3, labelKey: "steps.review",   to: "/order/review" },
+    { id: 4, labelKey: "steps.payment",  to: "/order/payment" }
 ];
 
 function getActiveId(pathname, current, steps) {
@@ -20,13 +21,12 @@ function getEffectiveMax(activeId, maxAllowedStep = 1) {
 }
 
 function buildItems(steps, activeId, effectiveMax) {
-    return steps.map((s, i) => {
+    return steps.map((s) => {
         const isActive = activeId === s.id;
         const isDone   = activeId > s.id;
         const status   = isActive ? "active" : isDone ? "done" : "upcoming";
         const isUnlocked = s.id <= effectiveMax;
         const connectorDone = activeId > s.id;
-
         return { step: s, status, isUnlocked, connectorDone };
     });
 }
@@ -37,17 +37,18 @@ export function useProgressSteps({ current, maxAllowedStep = 1 } = {}) {
     const activeId = getActiveId(pathname, current, steps);
     const effectiveMax = getEffectiveMax(activeId, maxAllowedStep);
     const items = buildItems(steps, activeId, effectiveMax);
-
     return { steps, activeId, effectiveMax, items };
 }
 
 // --- UI subcomponents ---
 
 export function StepPill({ step, status, isUnlocked, onBlockedAttempt }) {
+    const { t } = useTranslation();
+
     const base =
         "group relative inline-flex items-center gap-1.5 rounded-full px-3 py-1 ring-1 transition sm:gap-2 sm:px-4 sm:py-1.5";
 
-    // CHANGED: active state uses brand main color instead of slate
+    // active state uses brand main color instead of slate
     const styles =
         status === "active"
             ? "bg-brand-600 text-white ring-brand-600 shadow-[0_1px_0_0_rgba(255,255,255,0.06)_inset,0_6px_18px_-8px_rgba(30,64,175,0.40)]"
@@ -100,7 +101,9 @@ export function StepPill({ step, status, isUnlocked, onBlockedAttempt }) {
         )}
       </span>
 
-            <span className={`font-medium ${labelHiddenOnMobile}`}>{step.label}</span>
+            <span className={`font-medium ${labelHiddenOnMobile}`}>
+        {t(step.labelKey)}
+      </span>
 
             <span
                 className="pointer-events-none absolute inset-0 rounded-full ring-2 ring-transparent group-focus-visible:ring-slate-300"
