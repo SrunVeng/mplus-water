@@ -180,5 +180,12 @@
     "products": "ផលិតផល",
     "review": "ពិនិត្យឡើងវិញ",
     "payment": "ការបង់ប្រាក់"
+  },
+
+  "feature_unavailable": {
+    "title": "មុខងារនេះមិនទាន់អាចប្រើបានទេ",
+    "body": "បើអ្នកចង់ឲ្យអនុវត្ត សូមចុច <contact>ទាក់ទង</contact> តាមរយៈ Telegram។",
+    "cta": "ទាក់ទងតាម Telegram",
+    "back": "ត្រឡប់ក្រោយ"
   }
 }

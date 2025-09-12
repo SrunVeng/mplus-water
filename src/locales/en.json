@@ -181,5 +181,12 @@
     "products": "Products",
     "review": "Review",
     "payment": "Payment"
+  },
+
+  "feature_unavailable": {
+    "title": "This feature isn’t available",
+    "body": "If you’d like this implemented, click <contact>contact</contact> to reach me on Telegram.",
+    "cta": "Contact on Telegram",
+    "back": "Go back"
   }
 }
